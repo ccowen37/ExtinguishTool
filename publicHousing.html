@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Extinguish Tool Public Housing</title>
+
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="assets/demo.css">
+	<link rel="stylesheet" href="assets/header-basic-light.css">
+	<link rel="stylesheet" href="css/footer-basic-centered.css">
+	<link rel="stylesheet" href="css/responsive-grid.css">
+</head>
+<style>
+.dropbtn {
+    background-color: transparent;
+    color: #5c616a;
+    /*padding: 16px;*/
+    border: none;
+    cursor: pointer;
+	text-decoration: none;
+	font:15px 'Roboto', sans-serif;
+	display: inline-block;
+	padding: 0 5px;
+	opacity: 0.9;
+	line-height:1;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:1;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.divider {
+	height: 25px;
+    width: 100%;
+    background-color: darkseagreen;
+}
+.smallLine {
+	height: 5px;
+	width: 100%;
+}
+
+
+.PHAinfo {
+	/*font-:20px Arial, Helvetica, sans-serif;*/
+	font-size: 30px;
+	color: black;
+	font-weight: bold;
+
+}
+
+.PHAinfo2 {
+	/*font:15px Arial, Helvetica, sans-serif;*/
+	font-size: 20px;
+	color: black;
+}
+
+.subtitle {
+	font-size: 20px;
+	color: black;
+	font-weight: bold;
+}
+
+/*Race Bar chart style*/
+.bar {
+	fill: #a3d586; /*light green*/
+}
+
+.bar:hover {
+  fill: #FF8C00;
+}
+
+/*Age bar chart style */
+.bar2 {
+	fill: steelblue;
+}
+
+.bar2:hover {
+  fill: #FF8C00;
+}
+
+.bar3:hover {
+  fill: #FF8C00;
+}
+
+.bar3 {
+	fill: darkred;
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 100px;					
+    height: 28px;					
+    padding: 2px;				
+    font-size: 12px;		
+    background: #fff;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+
+/* style selection box */
+/* source: https://codepen.io/ericrasch/pen/zjDBx */
+.styled-select {
+   background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+   height: 29px;
+   overflow: hidden;
+   width: 448px; 
+}
+
+.styled-select select {
+   background: transparent;
+   border: none;
+   font-size: 14px;
+   height: 29px;
+   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   width: 500px;
+}
+
+.styled-select.slate {
+   background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;
+   height: 34px;
+   width: 448px;
+}
+
+.styled-select.slate select {
+   border: 1px solid #ccc;
+   font-size: 16px;
+   height: 34px;
+   width: 500px;
+}
+
+.slate   { background-color: #fff; }
+.slate select   { color: #000; }
+
+
+.equalDivide tr td { width:33%;}
+
+
+</style>
+<body>
+
+<header class="header-basic-light">
+
+	<div class="header-limiter">
+
+		<h1><a href="index.html">Extinguish<span>Tool</span></a></h1>
+
+		<nav>
+			<a href="index.html">Home</a>
+			<div class="dropdown">
+		    <button class="dropbtn">Maps</button>
+			    <div class="dropdown-content">
+			    	<a href="#">Map 1</a><br>
+					<a href="map2.html">Medicaid Data</a><br>
+					<a href="map3.html">Quitline Data</a>
+			    </div>
+			</div>
+			<a href="userGuide.html">User Guide</a>
+			<a href="publicHousing.html" class="selected">Public Housing</a>
+			<a href="about.html">About</a>
+			<a href="glossary.html">Glossary</a>
+			<a href="contact.html">Contact</a>
+		</nav>
+	</div>
+
+</header>
+
+	<script src="https://d3js.org/d3-scale.v1.min.js"></script>
+	<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+	<script src="//d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="ROI/ROI_STATELOCAL.js" type="text/javascript"></script>
+	<script src="ROI/ROI_PHD.js" type="text/javascript"></script>
+
+
+</head>
+
+<body>
+<div style="margin-left:20px; margin-top:20px;">
+Make a Public Housing Development selection to display relevant data.
+<br>
+</div>
+<div class="styled-select slate" style="margin: 20px 20px 0px 20px">
+<select name="optone" id="participantSel" size="1">
+    <option value="" selected="selected">Select participant name</option>
+</select>
+</div>
+<br>
+<br>
+<div class="styled-select slate" style="margin: 0px 20px 0px 20px">
+<select name="opttwo" id="housingSel" size="1">
+    <option value="" selected="selected">Please select participant name first</option>
+</select>
+</div>
+<br>
+<br>
+<div class="styled-select slate" style="margin: 0px 20px 0px 20px">
+<select name="optthree" id="addressSel" size="1">
+    <option value="" selected="selected">Please select project name first</option>
+</select>
+</div>
+
+<div id="building-fltr-opts">
+<div class="fltr-opts">
+<!-- OPEN: grid 12-col -->
+<div class="grid-container">
+
+<div class="clear"></div>
+
+<div style='float:left'>
+	<div style="float:left; margin:0px 30px 0px 20px">
+
+	<div style="float:left; margin:0px 30px 0px 20px">
+		<div class="PHAinfo" id="PHAName">
+		</div> 
+		<div class="PHAinfo2" id="PHAInfo">
+		</div>
+	</div>
+
+	<table >
+	  <tr>
+	    <td id="residentCharacteristics" colspan="2" class="info2" style="padding-bottom:20px;"></t>
+	  </tr>
+	  <tr>
+	    <td class="subtitle" id="raceChartTitle"></td>
+	    <td class="subtitle" id="ageChartTitle"></td>
+	  </tr>
+	  <tr>
+	    <td id="raceD3"></td>
+	    <td id="ageD3"></td>
+ 	  </tr>
+	</table>
+
+	<table >
+	  <tr>
+	    <td class="subtitle" id="incomeChartTitle"></td>
+	    <td class="subtitle" id="disabilityChartTitle"></td>
+	  </tr>
+	  <tr>
+	    <td id="incomeD3"></td>
+	    <td id="disabilityD3"></td>
+ 	  </tr>
+	</table>
+
+	<table >
+	  <tr>
+	    <td class="subtitle" id="genderChartTitle"></td>
+		<td id="smokerTitle" class="subtitle" valign="top" style="padding-top:10px"></td>
+	  </tr>
+	  <tr>
+	    <td id="genderD3"></td>
+		<td id="SmokerNum"></td>
+ 	  </tr>
+	</table>
+
+
+	</div>
+</div>
+
+<!-- <div class="grid-35">
+</div>
+ -->
+
+</div> <!-- CLOSE: grid 12 col -->
+</div>
+</div> <!-- Close: #building-fltr-opts -->
+
+<div style="margin-left:20px; margin-right:20px;">
+	<table class="equalDivide">
+		<tr>
+			<td id="ROITitle" class="info2" colspan="2" style="padding-top:20px;"></td>
+		</tr>
+
+		<tr>
+			<td id="ROIChart1Title" class="subtitle" valign="top" style="padding-top:10px"></td>
+			<td id="ROIChart2Title" class="subtitle" valign="top" style="padding-top:10px"></td>
+		</tr>
+		<tr>
+			<td id="ROIExplanation1" valign="top"></td>
+			<td id="ROIExplanation2" valign="top"></td>
+		</tr>
+		<tr>
+			<td id="ROI1D3"></td>
+			<td id="ROI2D3"></td>
+		</tr>	
+ 	  <tr>
+ 	  	<td id="ROIFootnote" valign="top" class="footnote" style="padding-top:20px;"></td>
+ 	  	<td id="ROIFootnote2" valign="top" class="footnote" style="padding-top:20px;"></td>
+ 	  </tr>			
+	</table>
+</div>
+<div style="clear:both;"></div>
+
+<script>
+
+	window.onload = function () {
+
+	var housingData = $.getJSON('https://egis-hud.opendata.arcgis.com/datasets/5c96143f79c940a0a8cedae99a1ac562_0.geojson', function(data) {
+    //data is the JSON string
+    dict = {};
+    data.features.forEach(function(d) { dict[d.properties.FORMAL_PARTICIPANT_NAME+d.properties.PROJECT_NAME+d.properties.STD_ADDR] = 
+    		{
+    		"contactInfo": 
+    			  	{"objectID": d.properties.OBJECTID,
+    			  	"participant": d.properties.FORMAL_PARTICIPANT_NAME,
+    			  	"project": d.properties.PROJECT_NAME,
+    			  	"address": d.properties.STD_ADDR,
+    			  	"city": d.properties.STD_CITY,
+    			  	"street": d.properties.STD_ST,
+    			  	"zip": d.properties.STD_ZIP5,
+    			  	"phone": d.properties.HA_PHN_NUM,
+    			  	"email": d.properties.HA_EMAIL_ADDR_TEXT,
+    			  	},
+    		"raceData": [ 
+    				{"race": "Black ", "value": d.properties.PCT_BLACK/100},
+    				{"race": "Native American ", "value": d.properties.PCT_NATIVE_AMERICAN/100 },
+    				{"race": "Asian ", "value": d.properties.PCT_ASIAN/100 },
+    				{"race": "Hispanic ", "value": d.properties.PCT_HISPANIC/100},
+    				{"race": "White ", "value": 1 - d.properties.PCT_MINORITY/100},
+    					],
+    		"ageData": [
+    				{"age": "<24 ", "value": d.properties.PCT_LT24_HEAD/100},
+    				{"age": "25-50 ", "value": d.properties.PCT_AGE_25_50/100},
+    				{"age": "51-61 ", "value": d.properties.PCT_AGE51_61/100},
+    				{"age": "62+ ", "value": d.properties.PCT_AGE62PLUS/100},
+						],
+			"incomeData": [
+			    {"income": "<5K ", "value": d.properties.PCT_LT5k/100},
+			    {"income": "5K-10K ", "value": d.properties.PCT_5K_LT10K/100},
+			    {"income": "10K-15K ", "value": d.properties.PCT_10K_LT15K/100},
+			    {"income": "15K-20K ", "value": d.properties.PCT_15K_LT20K/100},
+			    {"income": ">20K ", "value": d.properties.PCT_GE20K/100},
+			],
+			"disabilityData": [
+			    {"category": "All Household Members ", "value": d.properties.PCT_DISABLED_ALL/100},
+			    {"category": "Age <62yrs, Household Head ", "value": d.properties.PCT_DISABLED_LT62/100},
+			    {"category": "Age >62yrs, Household Head  ", "value": d.properties.PCT_DISABLED_GE62/100},
+			],
+			"genderData": [
+		    {"category": "Two spouses, 1+ Child ", "value": d.properties.PCT_2ADULTS/100}, //GenMaChild1
+		    {"category": "Single Female, 1+ Child ", "value": d.properties.PCT_FEMALE_HEAD_CHILD/100},
+		    {"category": "Single Female, 0 Children ", "value": (d.properties.PCT_FEMALE_HEAD - d.properties.PCT_FEMALE_HEAD_CHILD)/100},
+		    {"category": "Single Male, 1+ Child ", "value": Math.max(0,(d.properties.PCT_1ADULT - d.properties.PCT_FEMALE_HEAD_CHILD)/100)},
+		    {"category": "Single Male/2 Spouses, 0 Children", "value": 1 - 
+		    (d.properties.PCT_2ADULTS + d.properties.PCT_FEMALE_HEAD - Math.max(0,(d.properties.PCT_1ADULT - d.properties.PCT_FEMALE_HEAD_CHILD)))/100 },
+			],
+			} 
+		}); 
+
+
+    //makes array unique values only, alphabetically sorted
+	function unique(arr) {
+	    var u = {}, a = [];
+	    for(var i = 0, l = arr.length; i < l; ++i){
+	        if(!u.hasOwnProperty(arr[i])) {
+	            a.push(arr[i]);
+	            u[arr[i]] = 1;
+	        }
+	    }
+	    return a.sort();
+	}
+
+    options = [];
+    data.features.forEach(function(d) { options.push(d.properties.FORMAL_PARTICIPANT_NAME)});
+	options = unique(options);
+
+
+	// var MyArray = [];
+	// MyArray[StringVariableName] = MyArray[StringVariableName] || [];
+	// MyArray[StringVariableName][StringVariableName2] = MyArray[StringVariableName][StringVariableName2] || [];
+	// MyArray[StringVariableName][StringVariableName2].push("whatever");
+
+
+	participantDict = {}
+	options.forEach(function(d){ participantDict[d]={} });
+
+	options.forEach(function(x) {
+		data.features.forEach(function(d) {
+			if (x == d.properties.FORMAL_PARTICIPANT_NAME) { 
+				participantDict[x][d.properties.PROJECT_NAME] = participantDict[x][d.properties.PROJECT_NAME] || [];
+				participantDict[x][d.properties.PROJECT_NAME].push(d.properties.STD_ADDR) }
+		});
+	});
+
+    var participantSel = document.getElementById("participantSel"),
+        housingSel = document.getElementById("housingSel"),
+        citySel = document.getElementById("addressSel");
+    for (var participant in participantDict) {
+        participantSel.options[participantSel.options.length] = new Option(participant, participant);
+    }
+
+	counter = 1
+
+    participantSel.onchange = function () {
+        housingSel.length = 1; // remove all options bar first
+        addressSel.length = 1; // remove all options bar first
+        if (this.selectedIndex < 1) return; // done   
+        for (var housing in participantDict[this.value]) {
+            housingSel.options[housingSel.options.length] = new Option(housing, housing);
+        }
+        aKey = this.value
+
+        //delete first chart if second choice
+       	if (counter>=2) {document.getElementById("raceD3").innerHTML = '';
+       					document.getElementById("PHAName").innerHTML = '';
+       					document.getElementById("PHAInfo").innerHTML = '';
+       					document.getElementById("raceChartTitle").innerHTML = '';
+       					document.getElementById("residentCharacteristics").innerHTML = '';
+       					document.getElementById("ageChartTitle").innerHTML = '';
+       					document.getElementById("ageD3").innerHTML = '';
+       					document.getElementById("incomeD3").innerHTML = '';
+       					document.getElementById("genderD3").innerHTML = '';
+       					document.getElementById("disabilityD3").innerHTML = '';
+       					document.getElementById("ROI1D3").innerHTML = '';
+       					document.getElementById("ROI2D3").innerHTML = '';
+       					document.getElementById("SmokerNum").innerHTML = '';
+       					document.getElementById("ROITitle").innerHTML = '';
+       					document.getElementById("ROIChart1Title").innerHTML = '';
+						document.getElementById("ROIChart2Title").innerHTML = '';
+						document.getElementById("smokerTitle").innerHTML = '';
+						document.getElementById("ROIExplanation1").innerHTML = '';
+						document.getElementById("ROIExplanation2").innerHTML = '';
+						document.getElementById("ROIFootnote").innerHTML = '';
+						document.getElementById("ROIFootnote2").innerHTML = '';
+       					}
+
+    }
+    participantSel.onchange(); // reset in case page is reloaded
+    housingSel.onchange = function () {
+        addressSel.length = 1; // remove all options bar first
+        if (this.selectedIndex < 1) return; // done   
+        var addresses = participantDict[participantSel.value][this.value];
+        for (var i = 0; i < addresses.length; i++) {
+            addressSel.options[addressSel.options.length] = new Option(addresses[i], addresses[i]);
+        }
+        aKey += this.value
+    }
+
+    addressSel.onchange = function() {
+    	aKey += this.value
+    	counter +=1 //counted used for clearing charts
+    	//get user choice from dropdown
+	    var inp = aKey;
+
+
+	document.getElementById("PHAName").innerHTML = '<p>' + dict[inp].contactInfo.participant + '<br>' + dict[inp].contactInfo.project + '</p>'
+    document.getElementById("PHAInfo").innerHTML = '<p>Address: '+dict[inp].contactInfo.address + '</br>'
+												+ dict[inp].contactInfo.city+", " + dict[inp].contactInfo.street+" "+dict[inp].contactInfo.zip +'</p>' + 
+												'<p>Phone: ' + dict[inp].contactInfo.phone.substring(0,3)+'-'+dict[inp].contactInfo.phone.substring(3,6)+'-'+dict[inp].contactInfo.phone.substring(6,10) + '<p>' +
+												'<a href='+dict[inp].contactInfo.email+'>'+dict[inp].contactInfo.email+'</a></p>';
+    document.getElementById("residentCharacteristics").innerHTML = '<b>Resident Characteristics</b>';
+    document.getElementById("raceChartTitle").innerHTML = 'Ethnicity';
+    document.getElementById("incomeChartTitle").innerHTML = 'Income';
+    document.getElementById("disabilityChartTitle").innerHTML = 'Disability Status';
+    document.getElementById("genderChartTitle").innerHTML = 'Gender/Marital Status';
+    document.getElementById("ROITitle").innerHTML = 'Economic Benefits <a href="userGuide.html"><image src="assets/question-mark.png" height="5%"></a>';
+    document.getElementById("ROIExplanation1").innerHTML = '<i>Based on costs relevant to the public health and health care systems, such as the healthcare costs associated with tobacco use and secondhand smoke, and the cost of the following cessation interventions. For each dollar put in, we estimate the following amount gained:</i>'; 
+    document.getElementById("ROIExplanation2").innerHTML = '<i>Based on the reduction in costs relevant to the public housing system, such as the costs associated with smoking-related fires, we estimate the following additional costs savings per development per year:</i>'; 
+	document.getElementById("ROIChart1Title").innerHTML = 'State/Local Public Health Intervention <br>ROI Estimates<sup>*</sup>';
+	document.getElementById("ROIChart2Title").innerHTML = 'Public Housing Developments <br>Additional Cross-Sector Cost Savings Estimates';
+	document.getElementById("ROIFootnote").innerHTML = '<sup>*</sup>Please note that these ROI estimates do not include the cross-sector benefits to public housing developments that would also accrue due to reductions in their smoking-associated costs.<br><sup>**</sup>Nicotine Replacement Therapy';
+	document.getElementById("ROIFootnote2").innerHTML = '';
+	document.getElementById("smokerTitle").innerHTML = 'Residents and Smoking Estimates';
+
+		//CREATE SVG FOR RACE DATA
+		//////////////////////////
+
+		var margin = {top: 20, right: 90, bottom: 30, left: 90},
+	    width = 500 - margin.left - margin.right,
+	    height = 300 - margin.top - margin.bottom;
+
+		var formatPercent = d3.format(".0%");
+
+		// set the ranges
+		var y = d3.scaleBand()
+		          .range([height, 0])
+		          .padding(0.1);
+
+		var x = d3.scaleLinear()
+		          .range([0, width]);
+		          
+		// append the svg object to the body of the page
+		// append a 'group' element to 'svg'
+		// moves the 'group' element to the top left margin
+		var svg1 = d3.select("#raceD3").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", 
+		          "translate(" + margin.left + "," + margin.top + ")");
+
+		//define tooltip 
+	    var div = d3.select("#raceD3").append("div")	
+	    .attr("class", "tooltip")				
+	    .style("opacity", 0);
+
+		  // format the data
+		  dict[inp].raceData.forEach(function(d) {
+		    d.value = +d.value;
+		  });
+
+		  // Scale the range of the data in the domains
+		  x.domain([0, d3.max(dict[inp].raceData, function(d){ return d.value; })])
+		  y.domain(dict[inp].raceData.map(function(d) { return d.race; }));
+		  //y.domain([0, d3.max(data, function(d) { return d.sales; })]);
+
+		  // append the rectangles for the bar chart
+		  svg1.selectAll(".bar")
+		      .data(dict[inp].raceData)
+		    .enter().append("rect")
+		      .attr("class", "bar")
+		      //.attr("x", function(d) { return x(d.sales); })
+		      .attr("width", function(d) {return x(d.value); } )
+		      .attr("y", function(d) { return y(d.race); })
+		      .attr("height", y.bandwidth())
+		      .on("mouseover", function(d) {		
+	        div.transition()		
+	            .duration(200)		
+	            .style("opacity", .9);		
+	       	div.html((d.value*100).toFixed(2) + "% Residents")	
+	            .style("left", (d3.event.pageX) + "px")		
+	            .style("top", (d3.event.pageY - 28) + "px");
+	        })	
+		    .on("mouseout", function(d) {		
+		        div.transition()		
+		            .duration(500)		
+		            .style("opacity", 0);
+		            });	
+
+		  // add the x Axis
+		  svg1.append("g")
+		      .attr("transform", "translate(0," + height + ")")
+		      .call(d3.axisBottom(x).tickFormat(formatPercent));
+
+		  // add the y Axis
+		  svg1.append("g")
+		      .call(d3.axisLeft(y));
+
+
+
+		//CREATE AGE BRACKET SVG
+		/////////////////////////
+		  // set the dimensions and margins of the graph
+		var margin = {top: 20, right: 30, bottom: 40, left: 110},
+		    width = 500 - margin.left - margin.right,
+		    height = 300 - margin.top - margin.bottom;
+
+		var formatPercent = d3.format(".0%");
+
+		// set the ranges
+		var y = d3.scaleBand()
+		          .range([height, 0])
+		          .padding(0.1);
+
+		var x = d3.scaleLinear()
+		          .range([0, width]);
+		          
+		// append the svg object to the body of the page
+		// append a 'group' element to 'svg'
+		// moves the 'group' element to the top left margin
+		var svg2 = d3.select("#ageD3").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", 
+		          "translate(" + margin.left + "," + margin.top + ")");
+
+		//div for tooltip
+	    var div2 = d3.select("#ageD3").append("div")	
+	    .attr("class", "tooltip")				
+	    .style("opacity", 0);
+
+		  // format the data
+		  dict[inp].ageData.forEach(function(d) {
+		    d.value = +d.value;
+		  });
+
+		  // Scale the range of the data in the domains
+		  x.domain([0, d3.max(dict[inp].ageData, function(d){ return d.value; })])
+		  y.domain(dict[inp].ageData.map(function(d) { return d.age; }));
+		  //y.domain([0, d3.max(data, function(d) { return d.sales; })]);
+
+		  // append the rectangles for the bar chart
+		  svg2.selectAll(".bar2")
+		      .data(dict[inp].ageData)
+		    .enter().append("rect")
+		      .attr("class", "bar2")
+		      //.attr("x", function(d) { return x(d.sales); })
+		      .attr("width", function(d) {return x(d.value); } )
+		      .attr("y", function(d) { return y(d.age); })
+		      .attr("height", y.bandwidth())
+  		      .on("mouseover", function(d) {		
+		        div2.transition()		
+		            .duration(200)		
+		            .style("opacity", .9);		
+		       	div2.html((d.value*100).toFixed(2) + "% Residents")	
+		            .style("left", (d3.event.pageX) + "px")		
+		            .style("top", (d3.event.pageY - 28) + "px");
+		        })	
+			    .on("mouseout", function(d) {		
+			        div2.transition()		
+			            .duration(500)		
+			            .style("opacity", 0);
+			            });	
+
+
+		  // add the x Axis
+		  svg2.append("g")
+		      .attr("transform", "translate(0," + height + ")")
+		      .call(d3.axisBottom(x).tickFormat(formatPercent));
+
+		  // add the y Axis
+		  svg2.append("g")
+		      .call(d3.axisLeft(y));
+
+/////////////////////
+	  dict[inp].incomeData.forEach(function(d) {
+	    d.value = +d.value;
+	  });
+
+	var yIncome = d3.scaleBand()
+	          .range([height, 0])
+	          .padding(0.1);
+
+	var xIncome = d3.scaleLinear()
+	          .range([0, width]);
+
+	  // Scale the range of the data in the domains
+	  xIncome.domain([0, d3.max(dict[inp].incomeData, function(d){ return d.value; })])
+	  yIncome.domain(dict[inp].incomeData.map(function(d) { return d.income; }));
+		          
+		// append the svg object to the body of the page
+		// append a 'group' element to 'svg'
+		// moves the 'group' element to the top left margin
+		var svgIncome = d3.select("#incomeD3").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", 
+		          "translate(" + margin.left + "," + margin.top + ")");
+
+		//div for tooltip
+	    var divIncome = d3.select("#incomeD3").append("div")	
+	    .attr("class", "tooltip")				
+	    .style("opacity", 0);
+
+		  // append the rectangles for the bar chart
+		  svgIncome.selectAll(".bar2")
+		      .data(dict[inp].incomeData)
+		    .enter().append("rect")
+		      .attr("class", "bar2")
+		      //.attr("x", function(d) { return x(d.sales); })
+		      .attr("width", function(d) {return xIncome(d.value); } )
+		      .attr("y", function(d) { return yIncome(d.income); })
+		      .attr("height", yIncome.bandwidth())
+		      .on("mouseover", function(d) {		
+		        divIncome.transition()		
+		            .duration(200)		
+		            .style("opacity", .9);		
+		       	divIncome.html((d.value*100).toFixed(2) + "% Residents")	
+		            .style("left", (d3.event.pageX) + "px")		
+		            .style("top", (d3.event.pageY - 28) + "px");
+		        })	
+			    .on("mouseout", function(d) {		
+			        divIncome.transition()		
+			            .duration(500)		
+			            .style("opacity", 0);
+			            });	
+
+		  // add the x Axis
+		  svgIncome.append("g")
+		      .attr("transform", "translate(0," + height + ")")
+		      .call(d3.axisBottom(xIncome).tickFormat(formatPercent));
+
+		  // add the y Axis
+		  svgIncome.append("g")
+		      .call(d3.axisLeft(yIncome));
+//////////////////////////////
+
+	  dict[inp].disabilityData.forEach(function(d) {
+	    d.value = +d.value;
+	  });
+
+	var yDisability = d3.scaleBand()
+	          .range([height, 0])
+	          .padding(0.1);
+
+	var xDisability = d3.scaleLinear()
+	          .range([0, width]);
+
+	  // Scale the range of the data in the domains
+	  xDisability.domain([0, d3.max(dict[inp].disabilityData, function(d){ return d.value; })])
+	  yDisability.domain(dict[inp].disabilityData.map(function(d) { return d.category; }));
+		          
+		// append the svg object to the body of the page
+		// append a 'group' element to 'svg'
+		// moves the 'group' element to the top left margin
+		var svgDisability = d3.select("#disabilityD3").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", 
+		          "translate(145," + margin.top + ")");
+
+		//div for tooltip
+	    var divDisability = d3.select("#disabilityD3").append("div")	
+	    .attr("class", "tooltip")				
+	    .style("opacity", 0);
+
+		  // append the rectangles for the bar chart
+		  svgDisability.selectAll(".bar")
+		      .data(dict[inp].disabilityData)
+		    .enter().append("rect")
+		      .attr("class", "bar")
+		      //.attr("x", function(d) { return x(d.sales); })
+		      .attr("width", function(d) {return xDisability(d.value); } )
+		      .attr("y", function(d) { return yDisability(d.category); })
+		      .attr("height", yDisability.bandwidth())
+		      .on("mouseover", function(d) {		
+		        divDisability.transition()		
+		            .duration(200)		
+		            .style("opacity", .9);		
+		       	divDisability.html((d.value*100).toFixed(2) + "% Residents")	
+		            .style("left", (d3.event.pageX) + "px")		
+		            .style("top", (d3.event.pageY - 28) + "px");
+		        })	
+			    .on("mouseout", function(d) {		
+			        divDisability.transition()		
+			            .duration(500)		
+			            .style("opacity", 0);
+			            });	
+
+		  // add the x Axis
+		  svgDisability.append("g")
+		      .attr("transform", "translate(0," + height + ")")
+		      .call(d3.axisBottom(xDisability).tickFormat(formatPercent));
+
+		  // add the y Axis
+		  svgDisability.append("g")
+		      .call(d3.axisLeft(yDisability));
+//////////////////////////////
+
+		var yGender = d3.scaleBand()
+		          .range([height, 0])
+		          .padding(0.1);
+
+		var xGender = d3.scaleLinear()
+		          .range([0, width]);
+		          
+		// append the svg object to the body of the page
+		// append a 'group' element to 'svg'
+		// moves the 'group' element to the top left margin
+		var svgGender = d3.select("#genderD3").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", 
+		          "translate(165," + margin.top + ")");
+
+		//div for tooltip
+	    var divGender = d3.select("#genderD3").append("div")	
+	    .attr("class", "tooltip")				
+	    .style("opacity", 0);
+
+		  // format the data
+		  dict[inp].genderData.forEach(function(d) {
+		    d.value = +d.value;
+		  });
+
+		  // Scale the range of the data in the domains
+		  xGender.domain([0, d3.max(dict[inp].genderData, function(d){ return d.value; })])
+		  yGender.domain(dict[inp].genderData.map(function(d) { return d.category; }));
+
+		  // append the rectangles for the bar chart
+		  svgGender.selectAll(".bar")
+		      .data(dict[inp].genderData)
+		    .enter().append("rect")
+		      .attr("class", "bar")
+		      //.attr("x", function(d) { return x(d.sales); })
+		      .attr("width", function(d) {return xGender(d.value); } )
+		      .attr("y", function(d) { return yGender(d.category); })
+		      .attr("height", yGender.bandwidth())
+		      .on("mouseover", function(d) {		
+		        divGender.transition()		
+		            .duration(200)		
+		            .style("opacity", .9);		
+		       	divGender.html((d.value*100).toFixed(2) + "% Residents")	
+		            .style("left", (d3.event.pageX) + "px")		
+		            .style("top", (d3.event.pageY - 28) + "px");
+		        })	
+			    .on("mouseout", function(d) {		
+			        divGender.transition()		
+			            .duration(500)		
+			            .style("opacity", 0);
+			            });	
+
+		  // add the x Axis
+		  svgGender.append("g")
+		      .attr("transform", "translate(0," + height + ")")
+		      .call(d3.axisBottom(xGender).tickFormat(formatPercent));
+
+		  // add the y Axis
+		  svgGender.append("g")
+		      .call(d3.axisLeft(yGender));
+//////////////////////////////
+
+
+		      
+		sl = ROI_STATELOCAL['housing'][0][dict[inp].contactInfo.objectID]
+
+		 //State and Local health ROI
+		 var ROI1Data = [
+	  {"title":"4 Week NRT**","value":sl.ROI4STATE, "iter": 1},
+	  {"title":"8 Week NRT","value":sl.ROI8STATE, "iter": 2},
+	  {"title":"Group Counseling","value":sl.ROIGCSTATE, "iter": 3},
+	  {"title":"Billboard","value":sl.ROIBILLSTATE, "iter": 4},
+	];
+
+	var margin2 = {top: 20, right: 30, bottom: 40, left: 110},
+	    width = 350 - margin.left - margin.right,
+	    height = 500 - margin.top - margin.bottom;
+
+	//create svg canvas for ROI     
+	var svg3 = d3.select("#ROI1D3").append("svg")
+	    .attr("width", width + margin2.left + margin2.right)
+	    .attr("height", height + margin2.top + margin2.bottom)
+	  .append("g")
+	    .attr("transform", 
+	          "translate(" + margin2.left + "," + margin2.top + ")");
+
+
+
+   var elem = svg3.selectAll("g myCircleText")
+        .data(ROI1Data)
+  
+    /*Create and place the "blocks" containing the circle and the text */  
+    var elemEnter = elem.enter()
+	    .append("g")
+	    .attr("transform", function(d){return "translate(0," + d.iter*60 +")"});
+ 
+ 	function ROIColor(d){
+ 		return d >=0 ? "#a3d586" : "#ff6961"
+ 	};
+ 	//pastel green hex: #66f1b8
+
+
+    /*Create the circle for each block */
+    var circle = elemEnter.append("circle")
+	    .attr("r", function(d) {return 25; } )
+	    .attr("class","circle")
+	    .style("fill", function(d) {return ROIColor(d.value)});
+ 
+    /* Create the text for each block */
+    elemEnter.append("text")
+	    .attr("dx", function(d){return -16})
+	    .attr("dy", function(d){return 5})
+	    .style("font-weight", "bold")
+	    .text(function(d){return '$' + parseInt(d.value).toFixed(2)})
+
+    elemEnter.append("text")
+	    .attr("dx", function(d){return 50})
+	    .attr("dy", function(d){return 5})
+	    .text(function(d){return d.title + " ROI"})
+
+	   //PHD Level ROI Data 
+	var phdroi = ROI_PHD['housing'][0][dict[inp].contactInfo.objectID];
+
+    document.getElementById("ROI2D3").innerHTML = `<table> 
+    		<tr>
+    			<td></td>
+    			<td><b>4 Weeks NRT</b></td>
+    			<td><b>8 Weeks NRT</b></td>
+    			<td><b>Group Counseling</b></td>
+   			</tr>
+    		<tr bgcolor="#d3d3d3">
+    			<td><b>Fire Savings</b></td>
+    			<td>$`+ (phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_4).toFixed(2) + `</td>
+    			<td>$`+ (phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_8).toFixed(2) +`</td>
+    			<td>$`+ (phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_GC).toFixed(2)+`</td>
+   			</tr>
+    		<tr>
+    			<td><b>Turnover Savings</b></td>
+    			<td>$`+ (phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_4).toFixed(2)+`</td>
+    			<td>$`+ (phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_8).toFixed(2)+`</td>
+    			<td>$`+ (phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_GC).toFixed(2)+`</td>
+   			</tr>
+    		<tr bgcolor="#d3d3d3">
+    			<td><b>Eviction Savings</b></td>
+    			<td>$`+ (phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_4).toFixed(2) +`</td>
+    			<td>$`+ (phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_8).toFixed(2)+`</td>
+    			<td>$`+ (phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_GC).toFixed(2)+`</td>
+   			</tr>
+    		<tr>
+    			<td><b>Total Savings</b></td>
+    			<td>$`+ ((phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_4)+(phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_4)+(phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_4)).toFixed(2)+`</td>
+    			<td>$`+ ((phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_8)+(phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_8)+(phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_8)).toFixed(2)+`</td>
+    			<td>$`+ ((phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_GC)+(phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_GC)+(phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_GC)).toFixed(2)+`</td>
+   			</tr>
+
+   		 </table>`;
+
+	var margin = {top: 20, right: 20, bottom: 70, left: 40},
+    width = 500 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+
+	var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+	    y = d3.scaleLinear().rangeRound([height, 0]);
+
+	var svg5 = d3.select("#SmokerNum").append("svg")
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+	    .attr("transform", 
+	          "translate(" + margin.left + "," + margin.top + ")");
+
+
+	var div3 = d3.select("#SmokerNum").append("div")	
+	.attr("class", "tooltip")				
+	.style("opacity", 0);
+
+
+	  smokerData = [
+	  	{"title": "Total Adults", 'value': phdroi.NUM_ADULTS},
+	  	{"title": "Total Children", 'value': phdroi.NUM_CHILDREN},
+	  	{"title": "Estimated Adult Smokers", 'value': phdroi.ESTIMATED_ADULT_SMOKERS},
+	  ];
+		
+	  x.domain(smokerData.map(function(d) { return d.title; }));
+	  y.domain([0, d3.max(smokerData, function(d) { return d.value; })]);
+
+	var g = svg5.append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+	  x.domain(smokerData.map(function(d) { return d.title; }));
+	  y.domain([0, d3.max(smokerData, function(d) { return d.value; })]);
+
+	  g.append("g")
+	      .attr("class", "axis axis--x")
+	      .attr("transform", "translate(0," + height + ")")
+	      .call(d3.axisBottom(x));
+
+	  g.append("g")
+	      .attr("class", "axis axis--y")
+	      .call(d3.axisLeft(y).ticks(10))
+	    .append("text")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", "0.71em")
+	      .attr("text-anchor", "end")
+	      .text("Frequency");
+
+	  g.selectAll(".bar")
+	    .data(smokerData)
+	    .enter().append("rect")
+	      .attr("class", function(d) {return d.title=="Estimated Adult Smokers" ? "bar3" : "bar"})
+	      .attr("x", function(d) { return x(d.title); })
+	      .attr("y", function(d) { return y(d.value); })
+	      .attr("width", x.bandwidth())
+	      .attr("height", function(d) { return height - y(d.value); })
+	      .on("mouseover", function(d) {		
+	        div3.transition()		
+	            .duration(200)		
+	            .style("opacity", .9);		
+	       	div3.html((d.value).toFixed(0) + " Residents")	
+	            .style("left", (d3.event.pageX) + "px")		
+	            .style("top", (d3.event.pageY - 28) + "px");
+	        })	
+		    .on("mouseout", function(d) {		
+		        div3.transition()		
+		            .duration(500)		
+		            .style("opacity", 0);
+		            });		      
+
+
+
+    }
+
+
+	});
+}
+
+
+
+</script>
+
+<footer class="footer-basic-centered">
+
+	<p class="footer-company-motto">Georgia Tech Senior Design</p>
+
+	<p class="footer-links">
+		<a href="index.html">Home</a>
+		·
+		<a href="maps.html">Maps</a>
+		·
+		<a href="userGuide.html">User Guide</a>
+		·
+		<a href="publicHousing.html">Public Housing</a>
+		·
+		<a href="about.html">About</a>
+		·
+		<a href="glossary.html">Glossary</a>
+		·
+		<a href="contact.html">Contact</a>
+	</p>
+
+	<p class="footer-company-name">Extinguish Tool 2017</p>
+<br><p class='footer-company-name' style='margin:0 auto; width:50%'>The CDC Office of Smoking and Health and the CDC Office of the Associate Director for Science provided expertise and guidance for the development of the Extinguish tool in the support of the implementation of HUD’s Smoke-free policy.  However, CDC does not endorse private products, services or enterprises.</p>
+
+</footer>
+
+
+</body>
+
+</html>

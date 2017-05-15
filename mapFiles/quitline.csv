@@ -1,0 +1,52 @@
+state,id,max,patch,gum,lozenge
+Alabama,1,8,8,8,0
+Alaska,2,0,0,0,0
+Arizona,4,4,4,4,4
+Arkansas,5,4,4,4,4
+California,6,0,0,0,0
+Colorado,8,8,8,8,8
+Connecticut,9,4,4,4,4
+Delaware,10,0,0,0,0
+District of Columbia,11,0,0,0,0
+Florida,12,2,2,0,0
+Georgia,13,4,4,4,0
+Hawaii,15,0,0,0,0
+Idaho,16,8,8,8,8
+Illinois,17,6,6,0,0
+Indiana,18,2,2,2,0
+Iowa,19,8,8,8,8
+Kansas,20,0,0,0,0
+Kentucky,21,8,8,8,8
+Louisiana,22,2,2,2,0
+Maine,23,0,0,0,0
+Maryland,24,2,2,2,0
+Massachusetts,25,4,4,4,0
+Michigan,26,4,4,4,0
+Minnesota,27,4,4,4,4
+Mississippi,28,8,8,8,0
+Missouri,29,2,2,2,2
+Montana,30,0,0,0,0
+Nebraska,31,0,0,0,0
+Nevada,32,0,0,0,0
+New Hampshire,33,10,10,10,10
+New Jersey,34,2,2,0,0
+New Mexico,35,8,8,8,8
+New York,36,2,2,0,0
+North Carolina,37,0,0,0,0
+North Dakota,38,8,8,8,8
+Ohio,39,8,8,8,8
+Oklahoma,40,8,8,8,8
+Oregon,41,2,2,2,2
+Pennsylvania,42,4,4,4,4
+Rhode Island,44,4,4,4,4
+South Carolina,45,4,4,4,4
+South Dakota,46,8,8,8,8
+Tennessee,47,0,0,0,0
+Texas,48,0,0,0,0
+Utah,49,8,8,8,0
+Vermont,50,16,16,16,16
+Virginia,51,0,0,0,0
+Washington,53,4,4,0,4
+West Virginia,54,12,12,12,0
+Wisconsin,55,0,0,0,0
+Wyoming,56,0,0,0,0

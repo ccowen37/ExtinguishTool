@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Extinguish Tool Maps</title>
+
+  <link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="assets/demo.css">
+	<link rel="stylesheet" href="assets/header-basic-light.css">
+	<link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/footer-basic-centered.css">
+	<link rel="stylesheet" href="css/responsive-grid.css">
+
+</head>
+<style>
+
+.dropbtn {
+    background-color: transparent;
+    color: #5c616a;
+    /*padding: 16px;*/
+    border: none;
+    cursor: pointer;
+	text-decoration: none;
+  font:15px 'Roboto', sans-serif;
+	display: inline-block;
+	padding: 0 5px;
+	opacity: 0.9;
+	line-height:1;
+}
+
+.dropbtnselect {
+    /*padding: 16px;*/
+    cursor: pointer;
+  text-decoration: none;
+  font:15px Arial, Helvetica, sans-serif;
+  display: inline-block;
+  padding: 0 5px;
+  opacity: 0.9;
+  line-height:1;
+  background-color: #86a3d5;
+  color: #ffffff;
+  border-radius: 3px;
+  padding:6px 10px;
+}
+
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:1;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.divider {
+	height: 25px;
+    width: 100%;
+    background-color: darkseagreen;
+}
+.smallLine {
+	height: 5px;
+	width: 100%;
+}
+
+.PHAinfo {
+	font:20px Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+
+}
+
+.PHAinfo2 {
+	font:15px Arial, Helvetica, sans-serif;
+	color: black;
+}
+
+.subtitle {
+	font:15px Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+
+}
+
+path {
+  stroke-linejoin: round;
+}
+
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+
+}
+
+.counties {
+  fill: #aaa;
+}
+
+#states {
+  fill: #aaa;
+  stroke-linejoin: round;
+
+}
+
+
+#states .active {
+  fill: #ffffe6;
+}
+
+#state-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.0px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+
+.rlegend {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+}
+
+.rlegend text {
+  fill: #777;
+  font: 8px sans-serif;
+  text-anchor: middle;
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 100px;					
+    height: 50px;					
+    padding: 2px;				
+    font-size: 12px;		
+    background: #fff;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+
+div.tooltip2 {	
+    position: absolute;			
+    text-align: center;			
+    width: 200px;					
+    height: 80px;					
+    padding: 8px;				
+    font-size: 20px;	
+    font-weight: bold;	
+    background: #d3d3d3;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+.bubble {
+  fill: #5383d3;
+  opacity: 0.2;
+  stroke: #000; /*#fff*/
+  stroke-width: .1px; /*.5px;*/
+}
+
+.bubble :hover {
+  stroke: #000;
+}
+
+.rlegend {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+}
+
+.rlegend text {
+  fill: #777;
+  font: 8px sans-serif;
+  text-anchor: middle;
+}
+
+
+.bar rect {
+    stroke: #fff;
+    shape-rendering: crispEdges;
+}
+
+.bar rect.background {
+    fill: #eee;
+}
+
+.bar rect.percent {
+    fill: #74c476;
+}
+
+.bar:hover rect.percent {
+    fill: #a1d99b;
+}
+
+.bar text {
+    font-size: 12px;
+    fill: #333;
+}
+
+.axis line {
+    stroke: #ccc;
+    stroke-width: 1;
+}
+
+line.median {
+    stroke: #777;
+    stroke-width: 1;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #444;
+  stroke-width: .5;
+}
+
+</style>
+<body>
+
+<header class="header-basic-light">
+
+	<div class="header-limiter">
+
+		<h1><a href="index.html">Extinguish<span>Tool</span></a></h1>
+
+		<nav>
+			<a href="index.html">Home</a>
+			<div class="dropdown">
+		    <button class="dropbtnselect" >Maps</button>
+			    <div class="dropdown-content">
+			    	<a href="map1.html">Smoking Estimates</a><br>
+					<a href="map2.html">Medicaid Data</a><br>
+					<a href="map3.html">Quitline Data</a>
+			    </div>
+			</div>
+			<a href="userGuide.html">User Guide</a>
+			<a href="publicHousing.html">Public Housing</a>
+			<a href="about.html">About</a>
+			<a href="glossary.html">Glossary</a>
+			<a href="contact.html">Contact</a>
+		</nav>
+	</div>
+
+</header>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="//d3js.org/topojson.v2.min.js"></script>
+	<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+	<script type="text/javascript" src="lib/d3-tip.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="assets/underscore-min.js" type="text/javascript"></script>
+  <script src="https://d3js.org/d3-axis.v1.min.js"></script>
+
+
+</head>
+
+<body>
+<div id="container">
+
+<div style="margin:0 auto; width: 70%">
+
+<p><span class="dropcap">T</span>he map below displays the estimated percentage of adult smokers for each public housing development (PHD) throughout the nation. Users can find out the name of a PHD and its corresponding estimated number of adult smokers by hovering the mouse over a PHD, or clicking on a state to zoom in. <a href="userGuide.html">Click here</a> to learn more about the methods used to estimate both the number and the percentage of adult smoker within a PHD.</p>
+
+</div>
+<div id="mapContainer" style="margin:0 auto; width: 70%; text-align:center;">
+</div>
+
+<script>
+
+var housingData = $.getJSON('https://egis-hud.opendata.arcgis.com/datasets/5c96143f79c940a0a8cedae99a1ac562_0.geojson', function(data) {
+//data is the JSON string
+	dict = {};
+	data.features.forEach(function(d) { dict[d.properties.OBJECTID] = 
+		{
+		"contactInfo": 
+			  	{"objectID": d.properties.OBJECTID,
+			  	"participant": d.properties.FORMAL_PARTICIPANT_NAME,
+			  	"project": d.properties.PROJECT_NAME,
+			  	"address": d.properties.STD_ADDR,
+			  	"city": d.properties.STD_CITY,
+			  	"street": d.properties.STD_ST,
+			  	"zip": d.properties.STD_ZIP5,
+			  	"phone": d.properties.HA_PHN_NUM,
+			  	"email": d.properties.HA_EMAIL_ADDR_TEXT,
+			  	},
+		} 
+	}); 
+});
+
+var width = 900,
+    height = 520,
+    centered;
+
+var projection = d3.geoAlbersUsa()      //albersUsaPr()
+  .scale(1000);
+
+var path = d3.geoPath()
+              .projection(projection);
+
+var svg = d3.select("#mapContainer").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+svg.append("rect")
+    .attr("class", "background")
+    .attr("width", width)
+    .attr("height", height)
+    .on("click", clicked);
+
+var g = svg.append("g");
+
+var rscale = d3.scaleLinear()
+  .domain([0,1])
+  .range([2,2]);
+
+var r2scale = d3.scaleLinear()
+.domain([0,1])
+.range([3,3]);
+
+var color = d3.scaleSequential(d3.interpolateBlues);
+// var color = d3.scaleSequential(d3.interpolateYlOrRd);
+
+function clicked(d) {
+  var x, y, k;
+
+  //d.id is passed through the click function and is the state fips code
+
+  if (d && centered !== d) {
+    var centroid = path.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 2;
+    y = height / 2;
+    k = 1;
+    centered = null;
+  }
+
+  g.selectAll("path")
+      .classed("active", centered && function(d) { return d === centered; });
+
+  g.transition()
+      .duration(750)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+      .style("stroke-width", 1.5 / k + "px"); 
+
+  var rad;  
+  if (d && centered !== d) {
+    rad=2
+  } else {
+   rad=0.8
+  }
+
+  g.selectAll(".bubble")
+    .transition().duration(750)
+    .attr('r', rad);
+
+}
+
+// Define the div for the tooltip
+var div = d3.select("#mapContainer").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
+var div2 = d3.select("#mapContainer").append("div")	
+    .attr("class", "tooltip2")				
+    .style("opacity", 0);
+
+d3.json("mapFiles/us.json", function(error, us) { //https://d3js.org/us-10m.v1.json
+
+  if (error) throw error;
+  g.append("g")
+      .attr("id", "states")
+    .selectAll("path")
+      .data(topojson.feature(us, us.objects.states).features)
+    .enter().append("path")
+      .attr("d", path)
+      .on("click", clicked);
+      
+  g.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+      .attr("id", "state-borders")
+      .attr("d", path);
+   
+
+    d3.csv("mapFiles/simulation.csv", function(error, smokers) {
+
+      g.selectAll(".bubble")
+      .data(smokers)
+      .enter().append("circle")
+      .attr("class", "bubble2")
+      .attr("transform", function(d) { 
+      return "translate(" + projection([
+        d.x, //longitude
+        d.y //latitude 
+        ]) + ")"})
+      .attr("r", function(d) {return 2.3})
+      .style("fill", function(d) {return color(+d.avg);})
+  		.on("mouseover", function(d) {	
+        d3.select(this)
+        .style("stroke", "#000")
+        .style("stroke-width", "1px")	
+        div.transition()		
+            .duration(200)		
+            .style("opacity", .9);		
+       	div.html(d.people_total + " (" +(d.avg*100).toFixed(1) + "%) Estimated Smokers")	
+            .style("left", (d3.event.pageX) + "px")		
+            .style("top", (d3.event.pageY - 28) + "px");
+        div2.transition()		
+        	.duration(200)		
+            .style("opacity", .9);	
+        div2.html(dict[d.objectID].contactInfo.participant)
+        	.style("left", 1100 + "px")			
+        	.style("top", 400 + "px")		
+        })	
+	    .on("mouseout", function(d) {		
+          d3.select(this)
+          .style("stroke", "none")
+          .style("stroke-width", "none") 
+	        div.transition()		
+	            .duration(500)		
+	            .style("opacity", 0);
+	        div2.transition()		
+	            .duration(500)		
+	            .style("opacity", 0);
+	            });	
+
+    });
+  });
+
+//begin code to add legend
+var g2 = svg.append("g")
+  .attr("class", "key")
+  .attr("transform", "translate(0,20)");
+
+var x = d3.scaleLinear().domain([0,1])
+    .rangeRound([600, 860]);
+
+g2.selectAll("rect")
+  .data([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
+  .enter().append("rect")
+    .attr("height", 10)
+    .attr("x", function(d) { return x(d); })
+    .attr("width", function(d) { return 30 })
+    .attr("fill", function(d) { return color(d); });
+
+g2.append("text")
+    .attr("class", "caption")
+    .attr("x", x.range()[0])
+    .attr("y", -6)
+    .attr("fill", "#000")
+    .attr("text-anchor", "start")
+    .attr("font-weight", "bold")
+    .text("Estimated Percent HUD Smokers");
+
+g2.call(d3.axisBottom(x)
+    .tickSize(13)
+    .tickFormat(d3.format(".0%"))
+    .tickValues(x.ticks(10)))
+    .select(".domain")
+    .remove();
+
+</script>
+
+
+<div style="margin:0 auto; width: 70%">
+<p>The following map is a county choropleth map that displays the estimated county average percentage of adult smokers living in PHDs, calculated by our teams small area estimation. The counties grayed out either do not contain any public housing or have all PHDs with fewer than 11 residents, in which case our adult smoker estimation analysis is not applicable.</p>
+</div>
+<div id="simulation" style=" margin:0 auto; width: 70%; text-align: center;">
+  <svg id="simulation" width="980" height="600" ></svg> 
+  <script>
+
+    var svg2 = d3.select("svg#simulation"),
+        width = +svg2.attr("width"),
+        height = +svg2.attr("height");
+
+    var unemployment = d3.map();
+
+    var x2 = d3.scaleLinear()
+        .domain([10, 80])
+        .rangeRound([600, 860]);
+
+  var div3 = d3.select("#simulation").append("div")  
+      .attr("class", "tooltip")       
+      .style("opacity", 0);
+
+
+    var color2 = d3.scaleThreshold()
+        .domain(d3.range(15,60,5))
+        .range(d3.schemeBlues[9]);
+
+    var g3 = svg2.append("g")
+        .attr("class", "key")
+        .attr("transform", "translate(0,40)");
+
+    g3.selectAll("rect")
+      .data(color2.range().map(function(d) {
+          d = color2.invertExtent(d);
+          if (d[0] == null) d[0] = x2.domain()[0];
+          if (d[1] == null) d[1] = x2.domain()[1];
+          return d;
+        }))
+      .enter().append("rect")
+        .attr("height", 8)
+        .attr("x", function(d) { return x2(d[0]); })
+        .attr("width", function(d) { return x2(d[1]) - x2(d[0]); })
+        .attr("fill", function(d) { return color2(d[0]); });
+
+    g3.append("text")
+        .attr("class", "caption")
+        .attr("x", x2.range()[0])
+        .attr("y", -6)
+        .attr("fill", "#000")
+        .attr("text-anchor", "start")
+        .attr("font-weight", "bold")
+        .text("Average HUD Adult Smoking Rate");
+
+    g3.call(d3.axisBottom(x2)
+        .tickSize(13)
+        .tickFormat(function(x, i) { return i ? x : x + "%"; })
+        .tickValues(color2.domain()))
+      .select(".domain")
+        .remove();
+
+    d3.queue()
+        .defer(d3.json, "mapFiles/us.json")
+        .defer(d3.csv, "mapFiles/smk1.csv", function(d) { unemployment.set(+d.id, +d.rate*100); }) //d3.tsv, "smk.tsv"
+        .await(ready);
+
+    function ready(error, us) {
+      if (error) throw error;
+      svg2.append("g")
+          .attr("class", "counties")
+        .selectAll("path")
+        .data(topojson.feature(us, us.objects.counties).features)
+        .enter().append("path")
+          .attr("fill", function(d) { return color2(d.rate = unemployment.get(d.id)); })
+          .attr("d", path)
+          .on("mouseover", function(d) {  if(d.rate) {
+            d3.select(this)
+          .style("stroke", "#000")
+          .style("stroke-width", "1px") 
+          div3.transition()    
+              .duration(200)    
+              .style("opacity", .9);    
+          div3.html(d.rate.toFixed(1) + "% Estimated Smokers") 
+              .style("left", (d3.event.pageX) + "px")   
+              .style("top", (d3.event.pageY - 28) + "px");
+            }
+        })  
+        .on("mouseout", function(d) {   
+          d3.select(this)
+          .style("stroke", "none")
+          .style("stroke-width", "none") 
+            div3.transition()    
+                .duration(500)    
+                .style("opacity", 0);
+              });
+ 
+
+      svg2.append("path")
+          .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+          .attr("class", "states")
+          .attr("d", path);
+
+    }
+</script>
+</div>
+<div style="margin:0 auto; width: 70%">
+<p>The next map below displays the number of estimated adult smokers living in PHDs, with a radius scale (shown below) representing the number of smokers. The information in this map should be viewed hand-in-hand with the first map, in order to understand the size and proportion of smoking populations in the developments. Click on the gray part of a state to zoom in.</p>
+</div>
+<div id="indexSmoker" style=" margin:0 auto; width: 70%; text-align: center;">
+  <svg id="indexSmoker" width="980" height="600" ></svg> 
+<script>
+
+    var width = 980,
+        height = 600;
+
+    var projection = d3.geoAlbersUsa()
+                  .scale(1000);
+
+    var path2 = d3.geoPath()
+                  .projection(projection);
+
+    var svg3 = d3.select("svg#indexSmoker"),
+        width = +svg3.attr("width"),
+        height = +svg3.attr("height");
+
+      svg3.append("rect")
+          .attr("class", "background")
+          .attr("width", width)
+          .attr("height", height)
+          .on("click", clicked2);
+
+    var gg = svg3.append("g")
+
+    var rscale = d3.scaleSqrt()
+      .domain([0,2204])
+      .range([1,15]);
+
+
+      function clicked2(d) {
+          var x, y, k;
+
+          //d.id is passed through the click function and is the state fips code
+          if (d && centered !== d) {
+            var centroid = path2.centroid(d);
+            x = centroid[0];
+            y = centroid[1];
+            k = 4;
+            centered = d;
+          } else {
+            x = width / 2;
+            y = height / 2;
+            k = 1;
+            centered = null;
+          }
+
+          gg.selectAll("path")
+              .classed("active", centered && function(d) { return d === centered; });
+
+          gg.transition()
+              .duration(750)
+              .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+              .style("stroke-width", 1.5 / k + "px"); 
+
+              var translate = [-75,0];
+
+          rlegend.transition()
+            .duration(750)
+                   .attr("transform","translate("+translate.join(",")+")scale("+k+")")
+
+        }
+
+    var color = d3.scaleSequential(d3.interpolateBlues);
+    // var color = d3.scaleQuantize()
+    //     .domain([0, 20, 50, 100, 300, 500, 1000, 1500, 2000])
+    //     .range(['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#bd0026','#800026']);
+
+    var rlegend = svg3.append("g")
+        .attr("class", "rlegend")
+        .attr("transform", "translate(" + (width - 50) + "," + (height - 300) + ")")
+      .selectAll("g")
+        .data([1, 500, 2000])
+      .enter().append("g");
+
+    rlegend.append("text")
+      .data([1])
+      .attr("y", -30)
+      .text("Number Smokers")
+
+    rlegend.append("circle")
+        .attr("cy", function(d) { return -rscale(d); })
+        .attr("r", rscale);
+
+    rlegend.append("text")
+        .attr("y", function(d) { return -2 * rscale(d); })
+        .attr("dy", "1.3em")
+        .text(d3.format("d"));
+
+    d3.json("mapFiles/us.json", function(error, us) { //https://d3js.org/us-10m.v1.json
+
+      if (error) throw error;
+      gg.append("g")
+          .attr("id", "states")
+        .selectAll("path")
+          .data(topojson.feature(us, us.objects.states).features)
+        .enter().append("path")
+          .attr("d", path2)
+          .on("click", clicked2);
+
+      gg.append("path")
+          .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+          .attr("id", "state-borders")
+          .attr("d", path2);
+
+   
+        d3.csv("mapFiles/simulation.csv", function(error, smokers) {
+
+            gg.selectAll(".bubble")
+            .data(smokers)
+            .enter().append("circle")
+            .attr("class", "bubble")
+            .attr("transform", function(d) {if (projection([d.x,d.y])==null ) {return null} 
+              else{return "translate(" + projection([
+              +d.x, //longitude
+              +d.y //latitude 
+              ]) + ")"}})
+            .attr("r", function(d) {return rscale(+d.smoker);});
+
+          svg3.append("rect")
+            .attr("fill","#fff")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 10)
+            .attr("height", 10);
+
+        });
+      });
+
+</script>
+</div>
+
+<div style="margin:0 auto; width: 70%; margin-top: 20px;">
+<p>The chart below shows the estimate of the average percent of smokers by state (including the District of Columbia and Puerto Rico). The order is from the highest average percent (South Carolina) to the lower average percent (Hawaii). </p>
+
+</div>
+<div id="chart" style="margin:0 auto; width: 70%">
+    <h4>Estimated average percent of public housing smokers by state (including the District of Columbia and Puerto Rico):</h4>
+    <p><strong>Median:</strong> <span class="median"></span></p>
+
+</div>
+
+<script>
+//chart adapted from the following post: http://eyeseast.github.io/visible-data/2013/08/28/responsive-charts-with-d3/
+var url = "mapFiles/smokingState.csv"
+  , margin = {top: 30, right: 10, bottom: 30, left: 10}
+  , width = parseInt(d3.select('#chart').style('width'), 10)
+  , width = width - margin.left - margin.right
+  , height = 200 // placeholder
+  , barHeight = 20
+  , spacing = 3
+  , percent = d3.format('.0%');
+
+// scales and axes
+var x = d3.scaleLinear()
+    .range([0, width])
+    .domain([0, .6]); // hard-coding this because I know the data
+
+var y = d3.scaleBand();
+
+xAxisTop = d3.axisTop()
+  .scale(x)
+  .tickFormat(percent);
+
+var xAxis = d3.axisBottom()
+    .scale(x)
+    .tickFormat(percent);
+
+
+// create the chart
+var chart = d3.select('#chart').append('svg')
+    .style('width', (width + margin.left + margin.right) + 'px')
+  .append('g')
+    .attr('transform', 'translate(' + [margin.left, margin.top] + ')');
+
+d3.csv(url).row(function(d) {
+
+    return d;
+}).get(function(err, data) {
+    // sort
+    data = _.sortBy(data, 'percent').reverse();
+
+    // set y domain
+    y.domain(d3.range(data.length))
+        .range([0, data.length * barHeight]);
+
+    // set height based on data
+    height = y.range()[1];
+    d3.select(chart.node().parentNode)
+        .style('height', (height + margin.top + margin.bottom) + 'px')
+
+    // render the chart
+
+    // add top and bottom axes
+    chart.append('g')
+        .attr('class', 'x axis top')
+        .call(xAxisTop);
+
+    chart.append('g')
+        .attr('class', 'x axis bottom')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(xAxis);
+
+    var bars = chart.selectAll('.bar')
+        .data(data)
+      .enter().append('g')
+        .attr('class', 'bar')
+        .attr('transform', function(d, i) { return 'translate(0,'  + y(i) + ')'; });
+
+    bars.append('rect')
+        .attr('class', 'background')
+        .attr('height', y.bandwidth())
+        .attr('width', width);
+
+    bars.append('rect')
+        .attr('class', 'percent')
+        .attr('height', y.bandwidth())
+        .attr('width', function(d) { return x(d.percent); })
+
+    bars.append('text')
+        .text(function(d) { return d.Name; })
+        .attr('class', 'name')
+        .attr('y', y.bandwidth() - 5)
+        .attr('x', spacing);
+
+    // add median ticks
+    var median = d3.median(data, function(d) { return d.percent; });
+
+    d3.select('span.median').text(percent(median));
+
+    bars.append('line')
+        .attr('class', 'median')
+        .attr('x1', x(median))
+        .attr('x2', x(median))
+        .attr('y1', 1)
+        .attr('y2', y.bandwidth() - 1);
+});
+
+// resize
+d3.select(window).on('resize', resize); 
+
+function resize() {
+    // update width
+    width = parseInt(d3.select('#chart').style('width'), 10);
+    width = width - margin.left - margin.right;
+
+    // resize the chart
+    x.range([0, width]);
+    d3.select(chart.node().parentNode)
+        .style('height', (y.range()[1] + margin.top + margin.bottom) + 'px')
+        .style('width', (width + margin.left + margin.right) + 'px');
+
+    chart.selectAll('rect.background')
+        .attr('width', width);
+
+    chart.selectAll('rect.percent')
+        .attr('width', function(d) { return x(d.percent); });
+
+    // update median ticks
+    var median = d3.median(chart.selectAll('.bar').data(), 
+        function(d) { return d.percent; });
+    
+    chart.selectAll('line.median')
+        .attr('x1', x(median))
+        .attr('x2', x(median));
+
+
+    // update axes
+    chart.select('.x.axis.top').call(xAxis.orient('top'));
+    chart.select('.x.axis.bottom').call(xAxis.orient('bottom'));
+
+}
+</script>
+
+</div>
+
+
+
+
+<footer class="footer-basic-centered">
+
+	<p class="footer-company-motto">Georgia Tech Senior Design</p>
+
+	<p class="footer-links">
+		<a href="index.html">Home</a>
+		·
+		<a href="maps.html">Maps</a>
+		·
+		<a href="userGuide.html">User Guide</a>
+		·
+    <a href="publicHousing.html">Public Housing</a>
+    ·
+		<a href="about.html">About</a>
+		·
+		<a href="glossary.html">Glossary</a>
+		·
+		<a href="contact.html">Contact</a>
+	</p>
+
+	<p class="footer-company-name">Extinguish Tool 2017</p>
+<br><p class='footer-company-name' style='margin:0 auto; width:50%'>The CDC Office of Smoking and Health and the CDC Office of the Associate Director for Science provided expertise and guidance for the development of the Extinguish tool in the support of the implementation of HUD’s Smoke-free policy.  However, CDC does not endorse private products, services or enterprises.</p>
+
+</footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Extinguish Tool Maps</title>
+
+  <link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="assets/demo.css">
+	<link rel="stylesheet" href="assets/header-basic-light.css">
+	<link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/footer-basic-centered.css">
+	<link rel="stylesheet" href="css/responsive-grid.css">
+</head>
+<style>
+
+.dropbtn {
+    background-color: transparent;
+    color: #5c616a;
+    /*padding: 16px;*/
+    border: none;
+    cursor: pointer;
+	text-decoration: none;
+  font:15px 'Roboto', sans-serif;
+	display: inline-block;
+	padding: 0 5px;
+	opacity: 0.9;
+	line-height:1;
+}
+
+.dropbtnselect {
+    /*padding: 16px;*/
+    cursor: pointer;
+  text-decoration: none;
+  font:15px Arial, Helvetica, sans-serif;
+  display: inline-block;
+  padding: 0 5px;
+  opacity: 0.9;
+  line-height:1;
+  background-color: #86a3d5;
+  color: #ffffff;
+  border-radius: 3px;
+  padding:6px 10px;
+}
+
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:1;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.divider {
+	height: 25px;
+    width: 100%;
+    background-color: darkseagreen;
+}
+.smallLine {
+	height: 5px;
+	width: 100%;
+}
+
+.PHAinfo {
+	font:20px Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+
+}
+
+.PHAinfo2 {
+	font:15px Arial, Helvetica, sans-serif;
+	color: black;
+}
+
+.subtitle {
+	font:15px Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+
+}
+
+path {
+  stroke-linejoin: round;
+}
+
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+
+}
+
+.counties {
+  fill: #aaa;
+}
+
+#states {
+  fill: #aaa;
+  stroke-linejoin: round;
+
+}
+
+
+#states .active {
+  fill: #ffffe6;
+}
+
+#state-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.0px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+
+.rlegend {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+}
+
+.rlegend text {
+  fill: #777;
+  font: 8px sans-serif;
+  text-anchor: middle;
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 100px;					
+    height: 50px;					
+    padding: 2px;				
+    font-size: 12px;		
+    background: #fff;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+
+div.tooltip2 {	
+    position: absolute;			
+    text-align: center;			
+    width: 200px;					
+    height: 80px;					
+    padding: 8px;				
+    font-size: 20px;	
+    font-weight: bold;	
+    background: #d3d3d3;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+.bubble {
+  fill: #5383d3;
+  opacity: 0.2;
+  stroke: #000; /*#fff*/
+  stroke-width: .1px; /*.5px;*/
+}
+
+.bubble :hover {
+  stroke: #000;
+}
+
+.legend {
+  font-size: 12px;
+}
+
+
+</style>
+<body>
+
+<header class="header-basic-light">
+
+	<div class="header-limiter">
+
+		<h1><a href="index.html">Extinguish<span>Tool</span></a></h1>
+
+		<nav>
+			<a href="index.html">Home</a>
+			<div class="dropdown">
+		    <button class="dropbtnselect" >Maps</button>
+			    <div class="dropdown-content">
+			    	<a href="map1.html">Smoking Estimates</a><br>
+					<a href="map2.html">Medicaid Data</a><br>
+					<a href="map3.html">Quitline Data</a>
+			    </div>
+			</div>
+			<a href="userGuide.html">User Guide</a>
+			<a href="publicHousing.html">Public Housing</a>
+			<a href="about.html">About</a>
+			<a href="glossary.html">Glossary</a>
+			<a href="contact.html">Contact</a>
+		</nav>
+	</div>
+
+</header>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="//d3js.org/topojson.v2.min.js"></script>
+	<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+	<script type="text/javascript" src="lib/d3-tip.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+<div id="container" > 
+
+<div style="margin:0 auto; width: 70%">
+<p><span class="dropcap">T</span>he map below displays the estimated counts of Medicaid patients that have a primary or secondary diagnosis of smoking throughout the nation. The Medicaid patients included in the map vary in age and include both children and adults. Therefore, the numbers are an underestimate of estimated number of smokers on Medicaid throughout the nation.</p>
+<p>
+The source of the data comes from a Medicaid database located at the Centergy One building at the Institute for People and Technology (IPAT) at Georgia Tech. The database has information on Medicaid patients from the years 2005 to 2012 and the map below shows data from the year 2012. </p>
+<!-- Users can find the race/ethnicity percentages and gender percentages by hovering over each state or by clicking on a state to zoom in.
+ --></div>
+
+<div id="simulation" style=" margin:0 auto; width: 70%; text-align: center;">
+  <svg id="simulation" width="900" height="500" ></svg> 
+    <script>
+
+      var svg2 = d3.select("svg#simulation"),
+          width = +svg2.attr("width"),
+          height = +svg2.attr("height");
+
+      var unemployment = d3.map();
+
+      var projection = d3.geoAlbersUsa()      //albersUsaPr()
+        .scale(1000);
+
+      var path = d3.geoPath()
+                    .projection(projection);
+
+      var x2 = d3.scaleLinear()
+          .domain([10, 80])
+          .rangeRound([600, 860]);
+
+    var div3 = d3.select("#simulation").append("div")  
+        .attr("class", "tooltip")       
+        .style("opacity", 0);
+
+    var div4 = d3.select("#simulation").append("div")  
+        .attr("class", "tooltip2")       
+        .style("opacity", 0);
+
+
+      var color2 = d3.scaleThreshold()
+          .domain([0, 70, 130, 190, 250, 310, 370, 430, 490, 2000])
+          .range(d3.schemeBlues[9]);
+
+      var g3 = svg2.append("g")
+          .attr("class", "key")
+          .attr("transform", "translate(0,40)");
+
+      var ext_color_domain = [0, 70, 130, 190, 250, 310, 370, 430, 490, 2000]
+      var legend_labels = ["11+", "70+", "130+", "190+", "250+", "310+","370+","430+","490+","> 2000"]              
+
+      var legend = svg2.selectAll("g.legend")
+      .data(ext_color_domain)
+      .enter().append("g")
+      .attr("class", "legend");
+
+      var ls_w = 20, ls_h = 20;
+
+      legend.append("rect")
+      .attr("x", 20)
+      .attr("y", function(d, i){ return height - (i*ls_h) - 2*ls_h;})
+      .attr("width", ls_w)
+      .attr("height", ls_h)
+      .style("fill", function(d, i) { return color2(d); })
+      .style("opacity", 0.8);
+
+      legend.append("text")
+      .attr("x", 50)
+      .attr("y", function(d, i){ return height - (i*ls_h) - ls_h - 4;})
+      .text(function(d, i){ return legend_labels[i]; });
+
+      legend.append("text")
+      .attr("x", 20)
+      .attr("y", function(d, i){ return height - 4;})
+      .text("Counts of Medicaid patients with  primary or secondary diagnosis of smoking");
+
+      d3.queue()
+          .defer(d3.json, "mapFiles/us.json")
+          .defer(d3.csv, "mapFiles/medicaidSmoke.csv", function(d) { unemployment.set(+d.id, +d.rate); }) //d3.tsv, "smk.tsv"
+          .await(ready);
+
+      //US county file FIPS code does NOT include leading 0! 
+      function ready(error, us) {
+        if (error) throw error;
+        svg2.append("g")
+            .attr("class", "counties")
+          .selectAll("path")
+          .data(topojson.feature(us, us.objects.counties).features)
+          .enter().append("path")
+            .attr("fill", function(d) { return color2(d.rate = unemployment.get(d.id)); })
+            .attr("d", path)
+            .on("mouseover", function(d) {  if(d.rate) {
+              d3.select(this)
+            .style("stroke", "#000")
+            .style("stroke-width", "1px") 
+            div3.transition()    
+                .duration(200)    
+                .style("opacity", .9);    
+            div3.html(d.rate.toFixed(0) + " Medicaid Claims") 
+                .style("left", (d3.event.pageX) + "px")   
+                .style("top", (d3.event.pageY - 28) + "px");
+              }
+          })  
+          .on("mouseout", function(d) {   
+            d3.select(this)
+            .style("stroke", "none")
+            .style("stroke-width", "none") 
+              div3.transition()    
+                  .duration(500)    
+                  .style("opacity", 0);
+                });
+   
+
+        svg2.append("path")
+            .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+            .attr("class", "states")
+            .attr("d", path);
+
+      }
+  </script>
+</div>
+</div>
+
+<footer class="footer-basic-centered">
+
+	<p class="footer-company-motto">Georgia Tech Senior Design</p>
+
+	<p class="footer-links">
+		<a href="index.html">Home</a>
+		·
+		<a href="maps.html">Maps</a>
+		·
+		<a href="userGuide.html">User Guide</a>
+		·
+    <a href="publicHousing.html">Public Housing</a>
+    ·
+		<a href="about.html">About</a>
+		·
+		<a href="glossary.html">Glossary</a>
+		·
+		<a href="contact.html">Contact</a>
+	</p>
+
+	<p class="footer-company-name">Extinguish Tool 2017</p>
+<br><p class='footer-company-name' style='margin:0 auto; width:50%'>The CDC Office of Smoking and Health and the CDC Office of the Associate Director for Science provided expertise and guidance for the development of the Extinguish tool in the support of the implementation of HUD’s Smoke-free policy.  However, CDC does not endorse private products, services or enterprises.</p>
+
+</footer>
+
+
+</body>
+
+</html>

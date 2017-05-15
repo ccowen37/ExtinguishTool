@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>EXTINGUISH Tool About</title>
+
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="assets/demo.css">
+	<link rel="stylesheet" href="assets/header-basic-light.css">
+	<link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+	<link rel="stylesheet" href="MarkerCluster/dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="MarkerCluster/dist/MarkerCluster.Default.css" />
+	<link rel="stylesheet" href="css/footer-basic-centered.css">
+	<link rel="stylesheet" href="css/responsive-grid.css">
+</head>
+<style>
+.dropbtn {
+    background-color: transparent;
+    color: #5c616a;
+    /*padding: 16px;*/
+    border: none;
+    cursor: pointer;
+	text-decoration: none;
+	font:15px 'Roboto', sans-serif;
+	display: inline-block;
+	padding: 0 5px;
+	opacity: 0.9;
+	line-height:1;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:1;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.divider {
+	height: 25px;
+    width: 100%;
+    background-color: darkseagreen;
+}
+.smallLine {
+	height: 5px;
+	width: 100%;
+}
+
+.PHAinfo {
+	font:20px Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+
+}
+
+.PHAinfo2 {
+	font:15px Arial, Helvetica, sans-serif;
+	color: black;
+}
+
+.subtitle {
+	font:15px Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+
+}
+
+
+</style>
+<body>
+
+<header class="header-basic-light">
+
+	<div class="header-limiter">
+
+		<h1><a href="index.html">Extinguish<span>Tool</span></a></h1>
+
+		<nav>
+			<a href="index.html">Home</a>
+			<div class="dropdown">
+		    <button class="dropbtn">Maps</button>
+			    <div class="dropdown-content">
+			    	<a href="map1.html">Smoking Estimates</a><br>
+					<a href="map2.html">Medicaid Data</a><br>
+					<a href="map3.html">Quitline Data</a>
+			    </div>
+			</div>
+			<a href="userGuide.html">User Guide</a>
+			<a href="publicHousing.html">Public Housing</a>
+			<a href="about.html" class="selected">About</a>
+			<a href="glossary.html">Glossary</a>
+			<a href="contact.html">Contact</a>
+		</nav>
+	</div>
+
+</header>
+
+	<script src="https://d3js.org/d3-scale.v1.min.js"></script>
+	<script src="bullet.js"></script>
+	<script src="https://d3js.org/d3-timer.v1.min.js"></script>
+	<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+	<script src="MarkerCluster/dist/leaflet.markercluster.js" type="text/javascript"></script>
+	<script src="//d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="Public_Housing_Developments/allHousing.js" type="text/javascript"></script>
+	<script src="https://cdn.rawgit.com/calvinmetcalf/leaflet-ajax/gh-pages/dist/leaflet.ajax.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://cdn.rawgit.com/caseycesari/GeoJSON.js/master/geojson.min.js"></script>
+	<script src="VAFacilities/VA.js" type="text/javascript"></script>
+	<script src="counties/nation_county_FINAL.js" type="text/javascript"></script> 
+	<script src="GA_Counties/countiesEditFINAL.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+<div style='margin: 0 auto; width:80%; margin-top:20px;'>
+
+<p>
+<span class="dropcap">O</span>ur development team is consisted of 8 motivated Industrial and Systems Engineering students from the Georgia Institute of Technology. We are a diverse group of students with unique backgrounds and experiences all united by the same vision: to improve the systems we work on and create a positive impact on the people we work with. 
+</p>
+
+<p>
+With our <a href="index.html">Extinguish Tool</a> we hope to bring this vision to life.
+</p>
+<p style='width:60%; margin: 0 auto;'>
+<img src="assets/GTSeniorDesignTeam.jpg" width="100%"><br>
+From left to right: Sonia Tetlow (CDC client contact), Connor Owen, Jiali Zhao, Vishal Mummigatti, Diem "Dineise" Tran, Jose Rodriguez, Divya Vedula, Aaron Ahn, Kristie Choe, Corinne Graffunder (CDC client contact), Julie Swann (Georgia Tech faculty advisor). 
+</p>
+
+<p>
+Many people were involved in the creation of this tool. We would like to extend thanks to the following individuals for their help in making this project a reality: 
+</p>
+<p>
+<span class='subtitle'>CDC/ OSH</span>
+<br>
+Corinne Graffunder, Sonia Tetlow, Allison MacNeil, Randi Frank, Simon McNabb, Pam Lemos, Ketra Rice, Brian Armour, Brian King, Diane Beistle, Rebecca Murphy, Nishika Vidanage, Brandon Kenemer, Lili Casanova, Renee Nolen, Bob Rodes, Xin Xu, Karla Sneegas, Steve Babb, Sarah O’Leary, Sarah Edwards, Kari Sapsis, Janet Henry, Kimberly August
+</p>
+
+<p>
+<span class='subtitle'>CDC/ OADS</span>
+<br>
+Brian Gurbaxani, Mim Kelly, Kathleen Hayes
+</p>
+
+<p>
+<span class='subtitle'>Additional CDC Support</span>
+<br>
+Joan Braithwaite, Priya Vijayasarathi, Wanda Barfield, Sally Lin, Cathleen Walsh, Nick Farrell, Erin Black, Frances Babcock, Ann O’Connor
+</p>
+
+<p>
+<span class='subtitle'>State Partners</span>
+<br>
+Hellen Dekle (SC), Sally Herndon (NC), Farid Shamo and Molly Cotant (MI), Christin Kirchenbauer (OK)
+</p>
+
+<p>
+<span class='subtitle'>Atlanta Housing Authority</span>
+<br>
+Howard Grant, Cynthia McDonald
+</p>
+
+<p>
+<span class='subtitle'>GA Department of Public Health</span>
+<br>
+Jean O’Connor
+
+<p>
+<span class='subtitle'>HUD</span>
+<br>
+Peter Ashley, Martin Nee, Marquita Sanders, Eric Christensen, Rachel Riley, Leroy Ferguson, Merrie Nicholsdixon
+</p>
+
+
+<hr>
+
+<p>
+This project has been created as a part of a student senior design project at the Georgia Institute of Technology.
+</p>
+<p>
+The CDC Office of Smoking and Health and the CDC Office of the Associate Director for Science provided expertise and guidance for the development of the Extinguish tool in the support of the implementation of HUD’s Smoke-free policy. However, CDC does not endorse private products, services or enterprises.
+</p>
+
+<p>
+Click here for more information <a href="userGuide.html"><i>about the data</i></a>. 
+</p>
+</div>
+
+
+
+
+
+<footer class="footer-basic-centered">
+
+	<p class="footer-company-motto">Georgia Tech Senior Design</p>
+
+	<p class="footer-links">
+		<a href="index.html">Home</a>
+		·
+		<a href="maps.html">Maps</a>
+		·
+		<a href="userGuide.html">User Guide</a>
+		·
+		<a href="publicHousing.html">Public Housing</a>
+		·
+		<a href="about.html">About</a>
+		·
+		<a href="glossary.html">Glossary</a>
+		·
+		<a href="contact.html">Contact</a>
+	</p>
+
+	<p class="footer-company-name">Extinguish Tool 2017</p>
+	<br><p class='footer-company-name' style='margin:0 auto; width:50%'>The CDC Office of Smoking and Health and the CDC Office of the Associate Director for Science provided expertise and guidance for the development of the Extinguish tool in the support of the implementation of HUD’s Smoke-free policy.  However, CDC does not endorse private products, services or enterprises.</p>
+
+</footer>
+
+
+</body>
+
+</html>

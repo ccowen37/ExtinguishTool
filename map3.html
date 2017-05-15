@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Extinguish Tool Maps</title>
+
+  <link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="assets/demo.css">
+	<link rel="stylesheet" href="assets/header-basic-light.css">
+	<link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/footer-basic-centered.css">
+	<link rel="stylesheet" href="css/responsive-grid.css">
+</head>
+<style>
+
+.dropbtn {
+    background-color: transparent;
+    color: #5c616a;
+    /*padding: 16px;*/
+    border: none;
+    cursor: pointer;
+	text-decoration: none;
+  font:15px 'Roboto', sans-serif;
+	display: inline-block;
+	padding: 0 5px;
+	opacity: 0.9;
+	line-height:1;
+}
+
+.dropbtnselect {
+    /*padding: 16px;*/
+    cursor: pointer;
+  text-decoration: none;
+  font:15px Arial, Helvetica, sans-serif;
+  display: inline-block;
+  padding: 0 5px;
+  opacity: 0.9;
+  line-height:1;
+  background-color: #86a3d5;
+  color: #ffffff;
+  border-radius: 3px;
+  padding:6px 10px;
+}
+
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:1;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.divider {
+	height: 25px;
+    width: 100%;
+    background-color: darkseagreen;
+}
+.smallLine {
+	height: 5px;
+	width: 100%;
+}
+
+.PHAinfo {
+	font:20px Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+
+}
+
+.PHAinfo2 {
+	font:15px Arial, Helvetica, sans-serif;
+	color: black;
+}
+
+.subtitle {
+	font:15px Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+
+}
+
+path {
+  stroke-linejoin: round;
+}
+
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+.states {
+  fill: none;
+  stroke: #000;
+  stroke-linejoin: round;
+
+}
+
+.counties {
+  fill: #aaa;
+}
+
+#states {
+  fill: #aaa;
+  stroke-linejoin: round;
+
+}
+
+
+#states .active {
+  fill: #ffffe6;
+}
+
+#state-borders {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.0px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+
+.rlegend {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+}
+
+.rlegend text {
+  fill: #777;
+  font: 8px sans-serif;
+  text-anchor: middle;
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 150px;					
+    height: 60px;					
+    padding: 5px;				
+    font-size: 12px;		
+    background: #fff;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+
+div.tooltip2 {	
+    position: absolute;			
+    text-align: center;			
+    width: 200px;					
+    height: 80px;					
+    padding: 8px;				
+    font-size: 20px;	
+    font-weight: bold;	
+    background: #d3d3d3;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+.bubble {
+  fill: #5383d3;
+  opacity: 0.2;
+  stroke: #000; /*#fff*/
+  stroke-width: .1px; /*.5px;*/
+}
+
+.bubble :hover {
+  stroke: #000;
+}
+
+.rlegend {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+}
+
+.rlegend text {
+  fill: #777;
+  font: 8px sans-serif;
+  text-anchor: middle;
+}
+
+.bar rect {
+    stroke: #fff;
+    shape-rendering: crispEdges;
+}
+
+.bar rect.background {
+    fill: #eee;
+}
+
+.bar rect.percent {
+    fill: #74c476;
+}
+
+.bar:hover rect.percent {
+    fill: #a1d99b;
+}
+
+.bar text {
+    font-size: 12px;
+    fill: #333;
+}
+
+.axis line {
+    stroke: #ccc;
+    stroke-width: 1;
+}
+
+line.median {
+    stroke: #777;
+    stroke-width: 1;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #444;
+  stroke-width: .5;
+}
+
+</style>
+<body>
+
+<header class="header-basic-light">
+
+	<div class="header-limiter">
+
+		<h1><a href="index.html">Extinguish<span>Tool</span></a></h1>
+
+		<nav>
+			<a href="index.html">Home</a>
+			<div class="dropdown">
+		    <button class="dropbtnselect" >Maps</button>
+			    <div class="dropdown-content">
+			    	<a href="map1.html">Smoking Estimates</a><br>
+					<a href="map2.html">Medicaid Data</a><br>
+					<a href="map3.html">Quitline Data</a>
+			    </div>
+			</div>
+			<a href="userGuide.html">User Guide</a>
+			<a href="publicHousing.html">Public Housing</a>
+			<a href="about.html">About</a>
+			<a href="glossary.html">Glossary</a>
+			<a href="contact.html">Contact</a>
+		</nav>
+	</div>
+
+</header>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="//d3js.org/topojson.v2.min.js"></script>
+  <script src="https://d3js.org/d3-geo.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script type="text/javascript" src="lib/d3-tip.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="assets/underscore-min.js" type="text/javascript"></script>
+  <script src="https://d3js.org/d3-axis.v1.min.js"></script>
+
+
+</head>
+
+<body>
+<div id="container">
+
+<div style="margin:0 auto; width: 70%">
+
+<p><span class="dropcap">T</span>he map below describes the availability of Nicotine Replacement Therapy (NRT) offered by different state tobacco quitlines. Each Tobacco Quit Line is a public health service funded by each state government and provides evidence-based interventions for callers depending on their insurance. For uninsured individuals, each state Tobacco Quit Line provides the following type and duration of NRTs, as shown in the map. Typical NRTs include patches, gum, lozenges, and counseling.</p>
+
+</div>
+<div id="mapContainer" style="margin:0 auto; width: 70%">
+    <svg id="quitline" width="980" height="600" ></svg> 
+
+</div>
+
+<script>
+
+    d3.schemeBlues[9][0]="#aaa"
+    var color = d3.scaleOrdinal(d3.schemeBlues[9])
+          .domain([0,1,2,4,6,8,10,12,16])
+
+    var svg2 = d3.select("svg#quitline"),
+        width = +svg2.attr("width"),
+        height2 = +svg2.attr("height");
+
+      var g3 = svg2.append("g")
+          .attr("class", "key")
+          .attr("transform", "translate(0,40)");
+
+      var ext_color_domain = color.domain()
+      var legend_labels = ["NA", "1 Week", "2 Weeks", "4 Weeks", "6 Weeks", "8 Weeks", "10 Weeks", "12 Weeks", "16 Weeks"]              
+
+      var legend = svg2.selectAll("g.legend")
+      .data(ext_color_domain)
+      .enter().append("g")
+      .attr("class", "legend");
+
+      var ls_w = 20, ls_h = 20;
+
+      legend.append("rect")
+      .attr("x", width-85)
+      .attr("y", function(d, i){ return height2 - (i*ls_h) - 2*ls_h;})
+      .attr("width", ls_w)
+      .attr("height", ls_h)
+      .style("fill", function(d, i) { return color(d); })
+      .style("opacity", 0.8);
+
+      legend.append("text")
+      .attr("x", width-60)
+      .attr("y", function(d, i){ return height2 - (i*ls_h) - ls_h - 4;})
+      .text(function(d, i){ return legend_labels[i]; });
+
+      legend.append("text")
+      .attr("x", width-470)
+      .attr("y", function(d, i){ return height2 - 4;})
+      .text("Max number of Nicotine Replacement therapy offered to uninsured individual");
+
+    var quitline = d3.map();
+
+    var x2 = d3.scaleLinear()
+        .domain([10, 80])
+        .rangeRound([600, 860]);
+
+  var div3 = d3.select("#mapContainer").append("div")  
+      .attr("class", "tooltip")       
+      .style("opacity", 0);
+
+
+  var projection = d3.geoAlbersUsa()      //albersUsaPr()
+    .scale(1000);
+
+  var path = d3.geoPath()
+                .projection(projection);
+
+  d3.queue()
+      .defer(d3.json, "mapFiles/us.json")
+      .defer(d3.csv, "mapFiles/quitline.csv", function(d) { quitline.set(+d.id, +d.max); }) 
+      .await(ready);
+
+
+
+dict = {
+1:{ patch: 8, gum: 8, lozenge: 0 },
+2: { patch: 0, gum: 0, lozenge: 0 },
+4: { patch: 4, gum: 4, lozenge: 4 },
+5: { patch: 4, gum: 4, lozenge: 4 },
+6: { patch: 0, gum: 0, lozenge: 0 },
+8: { patch: 8, gum: 8, lozenge: 8 },
+9: { patch: 4, gum: 4, lozenge: 4 },
+10:  { patch: 0, gum: 0, lozenge: 0 },
+11:  { patch: 0, gum: 0, lozenge: 0 },
+12:  { patch: 2, gum: 0, lozenge: 0 },
+13:  { patch: 4, gum: 4, lozenge: 0 },
+15:  { patch: 0, gum: 0, lozenge: 0 },
+16:  { patch: 8, gum: 8, lozenge: 8 },
+17:  { patch: 6, gum: 0, lozenge: 0 },
+18:  { patch: 2, gum: 2, lozenge: 0 },
+19:  { patch: 8, gum: 8, lozenge: 8 },
+20:  { patch: 0, gum: 0, lozenge: 0 },
+21:  { patch: 8, gum: 8, lozenge: 8 },
+22:  { patch: 2, gum: 2, lozenge: 0 },
+23:  { patch: 0, gum: 0, lozenge: 0 },
+24:  { patch: 2, gum: 2, lozenge: 0 },
+25:  { patch: 4, gum: 4, lozenge: 0 },
+26:  { patch: 4, gum: 4, lozenge: 0 },
+27:  { patch: 4, gum: 4, lozenge: 4},
+28:  { patch: 8, gum: 8, lozenge: 0 },
+29:  { patch: 2, gum: 2, lozenge: 2 },
+30:  { patch: 0, gum: 0, lozenge: 0 },
+31:  { patch: 0, gum: 0, lozenge: 0 },
+32:  { patch: 0, gum: 0, lozenge: 0 },
+33:  { patch: 10, gum: 10, lozenge: 10 },
+34:  { patch: 2, gum: 0, lozenge: 0 },
+35:  { patch: 8, gum: 8, lozenge: 8 },
+36: { patch: 2, gum: 0, lozenge: 0 },
+37: { patch: 0, gum: 0, lozenge: 0 },
+38:  { patch: 8, gum: 8, lozenge: 8 },
+39:  { patch: 8, gum: 8, lozenge: 8 },
+40:  { patch: 8, gum: 8, lozenge: 8 },
+41:  { patch: 2, gum: 2, lozenge: 2 },
+42:  { patch: 4, gum: 4, lozenge: 4 },
+44:  { patch: 4, gum: 4, lozenge: 4 },
+45:  { patch: 4, gum: 4, lozenge: 4 },
+46: { patch: 8, gum: 8, lozenge: 8 },
+47:  { patch: 0, gum: 0, lozenge: 0 },
+48:  { patch: 0, gum: 0, lozenge: 0 },
+49: { patch: 8, gum: 8, lozenge: 0 },
+50: { patch: 16, gum: 16, lozenge: 16 },
+51: { patch: 0, gum: 0, lozenge: 0 },
+53: { patch: 4, gum: 0, lozenge: 4 },
+54: { patch: 12, gum: 12, lozenge: 0 },
+55: { patch: 0, gum: 0, lozenge: 0 },
+56: { patch: 0, gum: 0, lozenge: 0 },
+}
+
+
+  function ready(error, us) {
+    if (error) throw error;
+    svg2.append("g")
+        .attr("id", "states")
+      .selectAll("path")
+      .data(topojson.feature(us, us.objects.states).features)
+      .enter().append("path")
+        .attr("fill", function(d) { return color(d.max = quitline.get(d.id)); })
+        .attr("d", path)
+        .on("mouseover", function(d) {  if(d.max!=0) {
+        d3.select(this)
+      .style("stroke", "#000")
+      .style("stroke-width", "1px") 
+      div3.transition()    
+          .duration(200)    
+          .style("opacity", .9);    
+      div3.html(dict[d.id].gum + " Weeks Nicotine Gum<br>" +
+                dict[d.id].patch + " Weeks Nicotine Patch<br>"+
+                dict[d.id].lozenge + " Weeks Nicotine Lozenge") 
+          .style("left", (d3.event.pageX) + "px")   
+          .style("top", (d3.event.pageY - 28) + "px");
+        }
+    })  
+    .on("mouseout", function(d) {   
+      d3.select(this)
+      .style("stroke", "none")
+      .style("stroke-width", "none") 
+        div3.transition()    
+            .duration(500)    
+            .style("opacity", 0);
+          });
+
+  
+    svg2.append("path")
+        .datum(topojson.mesh(us, us.objects.states))
+        .attr("class", "states")
+        .attr("d", path);
+
+    }
+
+
+</script>
+
+
+<div style="margin:0 auto; width: 70%; margin-top: 20px;">
+<p>The chart below shows the estimate of the incoming calls per 10,000 to the state quitline, based on 2016 quarter 3 estimates from the CDC. <span style="font-size:10px;">(Source: https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe)</span></p>
+
+</div>
+<div id="chart" style="margin:0 auto; width: 70%">
+    <h4>Incoming Calls to State Quitline per 10,000:</h4>
+    <p><strong>Median:</strong> <span class="median"></span></p>
+
+</div>
+
+<script>
+//chart adapted from the following post: http://eyeseast.github.io/visible-data/2013/08/28/responsive-charts-with-d3/
+var url = "mapFiles/incomingCalls.csv"
+  , margin = {top: 30, right: 10, bottom: 30, left: 10}
+  , width = parseInt(d3.select('#chart').style('width'), 10)
+  , width = width - margin.left - margin.right
+  , height = 200 // placeholder
+  , barHeight = 20
+  , spacing = 3
+  , percent = null;
+
+// scales and axes
+var x = d3.scaleLinear()
+    .range([0, width])
+    .domain([1, 40]); // hard-coding this because I know the data
+
+var y = d3.scaleBand();
+
+xAxisTop = d3.axisTop()
+  .scale(x)
+  .tickFormat(percent);
+
+var xAxis = d3.axisBottom()
+    .scale(x)
+    .tickFormat(percent);
+
+
+// create the chart
+var chart = d3.select('#chart').append('svg')
+    .style('width', (width + margin.left + margin.right) + 'px')
+  .append('g')
+    .attr('transform', 'translate(' + [margin.left, margin.top] + ')');
+
+d3.csv(url).row(function(d) {
+
+    return d;
+}).get(function(err, data) {
+    // sort
+    //this function not working so data sorted in spreadsheet instead
+    // data = _.sortBy(data, 'rate').reverse();
+
+    // set y domain
+    y.domain(d3.range(data.length))
+        .range([0, data.length * barHeight]);
+
+    // set height based on data
+    height = y.range()[1];
+    d3.select(chart.node().parentNode)
+        .style('height', (height + margin.top + margin.bottom) + 'px')
+
+    // render the chart
+
+    // add top and bottom axes
+    chart.append('g')
+        .attr('class', 'x axis top')
+        .call(xAxisTop);
+
+    chart.append('g')
+        .attr('class', 'x axis bottom')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(xAxis);
+
+    var bars = chart.selectAll('.bar')
+        .data(data)
+      .enter().append('g')
+        .attr('class', 'bar')
+        .attr('transform', function(d, i) { return 'translate(0,'  + y(i) + ')'; });
+
+    bars.append('rect')
+        .attr('class', 'background')
+        .attr('height', y.bandwidth())
+        .attr('width', width);
+
+    bars.append('rect')
+        .attr('class', 'percent')
+        .attr('height', y.bandwidth())
+        .attr('width', function(d) { return x(d.rate); })
+
+    bars.append('text')
+        .text(function(d) { return d.state; })
+        .attr('class', 'name')
+        .attr('y', y.bandwidth() - 5)
+        .attr('x', spacing);
+
+    // add median ticks
+    var median = d3.median(data, function(d) { return d.rate; });
+
+    d3.select('span.median').text(median);
+
+    bars.append('line')
+        .attr('class', 'median')
+        .attr('x1', x(median))
+        .attr('x2', x(median))
+        .attr('y1', 1)
+        .attr('y2', y.bandwidth() - 1);
+});
+
+// resize
+d3.select(window).on('resize', resize); 
+
+function resize() {
+    // update width
+    width = parseInt(d3.select('#chart').style('width'), 10);
+    width = width - margin.left - margin.right;
+
+    // resize the chart
+    x.range([0, width]);
+    d3.select(chart.node().parentNode)
+        .style('height', (y.range()[1] + margin.top + margin.bottom) + 'px')
+        .style('width', (width + margin.left + margin.right) + 'px');
+
+    chart.selectAll('rect.background')
+        .attr('width', width);
+
+    chart.selectAll('rect.percent')
+        .attr('width', function(d) { return x(d.rate); });
+
+    // update median ticks
+    var median = d3.median(chart.selectAll('.bar').data(), 
+        function(d) { return d.rate; });
+    
+    chart.selectAll('line.median')
+        .attr('x1', x(median))
+        .attr('x2', x(median));
+
+
+    // update axes
+    chart.select('.x.axis.top').call(xAxis.orient('top'));
+    chart.select('.x.axis.bottom').call(xAxis.orient('bottom'));
+
+}
+</script>
+
+<div style="margin:0 auto; width: 70%; margin-top: 20px;">
+<p>The chart below shows the estimate of callers to the state quitline who received counseling and/or medications per 1,000 tobacco users who called, based on 2016 quarter 3 estimates from the CDC. <span style="font-size:10px;">(Source: https://chronicdata.cdc.gov/Quitline/Quitline-Service-Utilization-2010-To-Present/equ4-92qe)</span></p>
+
+</div>
+<div id="chart2" style="margin:0 auto; width: 70%">
+    <h4>Callers who received counseling and/or Medications per 1,000 tobacco users:</h4>
+    <p><strong>Median:</strong> <span class="median2"></span></p>
+
+</div>
+
+<script>
+//chart adapted from the following post: http://eyeseast.github.io/visible-data/2013/08/28/responsive-charts-with-d3/
+var url2 = "mapFiles/callerInterventions.csv"
+  , margin2 = {top: 30, right: 10, bottom: 30, left: 10}
+  , width2 = parseInt(d3.select('#chart2').style('width'), 10)
+  , width2 = width2 - margin2.left - margin2.right
+  , height2 = 200 // placeholder
+  , barHeight2 = 20
+  , spacing2 = 3
+  , percent2 = null;
+
+// scales and axes
+var x2 = d3.scaleLinear()
+    .range([0, width2])
+    .domain([1, 7]); // hard-coding this because I know the data
+
+var y2 = d3.scaleBand();
+
+xAxisTop2 = d3.axisTop()
+  .scale(x2)
+  .tickFormat(percent2);
+
+var xAxis2 = d3.axisBottom()
+    .scale(x2)
+    .tickFormat(percent2);
+
+
+// create the chart
+var chart2 = d3.select('#chart2').append('svg')
+    .style('width', (width2 + margin2.left + margin2.right) + 'px')
+  .append('g')
+    .attr('transform', 'translate(' + [margin2.left, margin2.top] + ')');
+
+d3.csv(url2).row(function(d) {
+
+    return d;
+}).get(function(err, data2) {
+    // sort
+    //this function not working so data sorted in spreadsheet instead
+    // data = _.sortBy(data, 'rate').reverse();
+
+    // set y domain
+    y2.domain(d3.range(data2.length))
+        .range([0, data2.length * barHeight2]);
+
+    // set height based on data
+    height2 = y2.range()[1];
+    d3.select(chart2.node().parentNode)
+        .style('height', (height2 + margin2.top + margin2.bottom) + 'px')
+
+    // render the chart
+
+    // add top and bottom axes
+    chart2.append('g')
+        .attr('class', 'x axis top')
+        .call(xAxisTop2);
+
+    chart2.append('g')
+        .attr('class', 'x axis bottom')
+        .attr('transform', 'translate(0,' + height2 + ')')
+        .call(xAxis2);
+
+    var bars2 = chart2.selectAll('.bar')
+        .data(data2)
+      .enter().append('g')
+        .attr('class', 'bar')
+        .attr('transform', function(d, i) { return 'translate(0,'  + y2(i) + ')'; });
+
+    bars2.append('rect')
+        .attr('class', 'background')
+        .attr('height', y2.bandwidth())
+        .attr('width', width2);
+
+    bars2.append('rect')
+        .attr('class', 'percent')
+        .attr('height', y2.bandwidth())
+        .attr('width', function(d) { return x2(d.rate); })
+
+    bars2.append('text')
+        .text(function(d) { return d.state; })
+        .attr('class', 'name')
+        .attr('y', y2.bandwidth() - 5)
+        .attr('x', spacing2);
+
+    // add median ticks
+    var median2 = d3.median(data2, function(d) { return d.rate; });
+
+    d3.select('span.median2').text(median2);
+
+    bars2.append('line')
+        .attr('class', 'median')
+        .attr('x1', x2(median2))
+        .attr('x2', x2(median2))
+        .attr('y1', 1)
+        .attr('y2', y2.bandwidth() - 1);
+});
+
+// resize
+d3.select(window).on('resize', resize); 
+
+function resize() {
+    // update width
+    width2 = parseInt(d3.select('#chart2').style('width'), 10);
+    width2 = width2 - margin2.left - margin2.right;
+
+    // resize the chart
+    x2.range([0, width2]);
+    d3.select(chart2.node().parentNode)
+        .style('height', (y2.range()[1] + margin2.top + margin2.bottom) + 'px')
+        .style('width', (width2 + margin2.left + margin2.right) + 'px');
+
+    chart2.selectAll('rect.background')
+        .attr('width', width2);
+
+    chart2.selectAll('rect.percent')
+        .attr('width', function(d) { return x2(d.rate); });
+
+    // update median ticks
+    var median2 = d3.median(chart2.selectAll('.bar').data(), 
+        function(d) { return d.rate; });
+    
+    chart2.selectAll('line.median')
+        .attr('x1', x2(median2))
+        .attr('x2', x2(median2));
+
+
+    // update axes
+    chart2.select('.x.axis.top').call(xAxis2.orient('top'));
+    chart2.select('.x.axis.bottom').call(xAxis2.orient('bottom'));
+
+}
+</script>
+
+
+</div>
+
+
+<footer class="footer-basic-centered">
+
+	<p class="footer-company-motto">Georgia Tech Senior Design</p>
+
+	<p class="footer-links">
+		<a href="index.html">Home</a>
+		·
+		<a href="maps.html">Maps</a>
+		·
+		<a href="userGuide.html">User Guide</a>
+		·
+    <a href="publicHousing.html">Public Housing</a>
+    ·
+		<a href="about.html">About</a>
+		·
+		<a href="glossary.html">Glossary</a>
+		·
+		<a href="contact.html">Contact</a>
+	</p>
+
+	<p class="footer-company-name">Extinguish Tool 2017</p>
+<br><p class='footer-company-name' style='margin:0 auto; width:50%'>The CDC Office of Smoking and Health and the CDC Office of the Associate Director for Science provided expertise and guidance for the development of the Extinguish tool in the support of the implementation of HUD’s Smoke-free policy.  However, CDC does not endorse private products, services or enterprises.</p>
+
+</footer>
+
+
+</body>
+
+</html>

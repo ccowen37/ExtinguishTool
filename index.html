@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>EXTINGUISH Tool</title>
+
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="assets/demo.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+	<link rel="stylesheet" href="assets/header-basic-light.css">
+	<link href='https://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+	<link rel="stylesheet" href="css/footer-basic-centered.css">
+	<link rel="stylesheet" href="css/responsive-grid.css">
+</head>
+<style>
+
+body {
+	font-family: 'Roboto', sans-serif;
+
+}
+
+
+.circle{
+	stroke:#000;
+	stroke-width: 0.5px;
+	fill: white;
+}
+
+.dropbtn {
+    background-color: transparent;
+    color: #5c616a;
+    /*padding: 16px;*/
+    border: none;
+    cursor: pointer;
+	text-decoration: none;
+	font:15px 'Roboto', sans-serif;
+	display: inline-block;
+	padding: 0 5px;
+	opacity: 0.9;
+	line-height:1;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:9;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 9;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.divider {
+	height: 25px;
+    width: 100%;
+    background-color: #86a3d5;
+}
+.smallLine {
+	height: 5px;
+	width: 100%;
+}
+
+.PHAinfo {
+	/*font-:20px Arial, Helvetica, sans-serif;*/
+	font-size: 30px;
+	color: black;
+	font-weight: bold;
+
+}
+
+.PHAinfo2 {
+	/*font:15px Arial, Helvetica, sans-serif;*/
+	font-size: 20px;
+	color: black;
+}
+
+.info2 {
+	/*font-:20px Arial, Helvetica, sans-serif;*/
+	font-size: 28px;
+	font-weight: bold;
+
+}
+
+.footnote {
+	/*font-:20px Arial, Helvetica, sans-serif;*/
+	font-size: 10px;
+
+}
+
+.subtitle {
+	font-size: 20px;
+	color: black;
+	font-weight: bold;
+}
+
+/*Race Bar chart style*/
+.bar {
+	fill: #a3d586; /*light green*/
+}
+
+.bar:hover {
+  fill: #FF8C00;
+}
+
+/*Age bar chart style */
+.bar2 {
+	fill: steelblue;
+}
+
+.bar2:hover {
+  fill: #FF8C00;
+}
+
+.bar3:hover {
+  fill: #FF8C00;
+}
+
+.bar3 {
+	fill: darkred;
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 100px;					
+    height: 28px;					
+    padding: 2px;				
+    font-size: 12px;		
+    background: #fff;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+
+.contentDiv {
+    position: relative;
+}
+
+@keyframes bouncing {
+    0% {bottom: 0;}
+    50% {bottom: 20px;}
+    100% {bottom: 0;}
+}
+
+.arrow {
+    animation: bouncing 1s infinite ease-in-out;
+    bottom: 0;
+    display: block;
+    height: 50px;
+    left: 50%;
+    margin-left: -25px;
+    position: absolute;
+    width: 50px;
+}
+
+.equalDivide tr td { width:33%;}
+
+
+</style>
+<body>
+
+<header class="header-basic-light">
+
+	<div class="header-limiter">
+
+		<h1><a href="index.html">Extinguish<span>Tool</span></a></h1>
+
+		<nav>
+			<a href="index.html" class="selected">Home</a>
+			<div class="dropdown">
+		    <button class="dropbtn">Maps</button>
+			    <div class="dropdown-content">
+			    	<a href="map1.html">Smoking Estimates</a><br>
+					<a href="map2.html">Medicaid Data</a><br>
+					<a href="map3.html">Quitline Data</a>
+			    </div>
+			</div>
+			<a href="userGuide.html">User Guide</a>
+			<a href="publicHousing.html">Public Housing</a>
+			<a href="about.html">About</a>
+			<a href="glossary.html">Glossary</a>
+			<a href="contact.html">Contact</a>
+		</nav>
+	</div>
+
+</header>
+
+<style>
+
+ #mapid { height: 400px; width:100%; position: relative; z-index:1;}
+ .info { padding: 6px 8px; font: 14px/16px 'Roboto', sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } 
+ .info h4 { margin: 0 0 5px; color: #777; }
+ .legend { text-align: left; line-height: 22px; color: #555; } 
+ .legend i { width: 20px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
+
+</style>
+	<script src="https://d3js.org/d3-scale.v1.min.js"></script>
+	<script src="https://d3js.org/d3-timer.v1.min.js"></script>
+	<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+	<script src="//d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<!-- <script src="https://cdn.rawgit.com/calvinmetcalf/leaflet-ajax/gh-pages/dist/leaflet.ajax.min.js"></script> -->
+	<script src="mapFiles/geojsonajax.js" type="text/javascript"></script> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://cdn.rawgit.com/caseycesari/GeoJSON.js/master/geojson.min.js"></script>
+	<script src="counties/nation_county_FINAL.js" type="text/javascript"></script> 
+	<script src="ROI/ROI_STATELOCAL.js" type="text/javascript"></script>
+	<script src="ROI/ROI_PHD.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.js"></script>
+	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+	<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+
+
+</head>
+<br>
+<body>
+
+	<div style="margin: 0 auto; width: 50%; text-align:center;">Click on invididual Public Housing Developments (green circles) for a data breakdown.</div>
+		<div style="margin: 0 auto; width: 50%; text-align:center;"><span style="vertical-align: middle;">–</span></div>
+
+	<div id="mapid"></div>
+	<script>
+
+
+	$(document).on('click', 'a[href^="#"]', function(event){
+	    event.preventDefault();
+
+	    $('html, body').animate({
+	        scrollTop: $( $.attr(this, 'href') ).offset().top
+	    }, 600);
+	});
+
+		var geojsonMarkerOptions = {
+	    radius: 3,
+	    fillColor: "#33FFCE",
+	    color: "#000",
+	    weight: 1,
+	    opacity: 1,
+	    fillOpacity: 0.8
+	};
+
+		var fqhcMarkerOptions = {
+	    radius: 3,
+	    fillColor: "#FFCE33",
+	    color: "#000",
+	    weight: 1,
+	    opacity: 1,
+	    fillOpacity: 0.8
+	};
+
+		var VAMarkerOptions = {
+	    radius: 3,
+	    fillColor: "#FF0000",
+	    color: "#000",
+	    weight: 1,
+	    opacity: 1,
+	    fillOpacity: 0.8
+	};
+
+		var MedicalMarkerOptions = {
+	    radius: 3,
+	    fillColor: "#035096",
+	    color: "#000",
+	    weight: 1,
+	    opacity: 1,
+	    fillOpacity: 0.8
+	};
+
+		var homeHealthOptions = {
+	    radius: 3,
+	    fillColor: "#E6E6FA",
+	    color: "#000",
+	    weight: 1,
+	    opacity: 1,
+	    fillOpacity: 0.8
+	};
+
+		var hospitalOptions = {
+	    radius: 3,
+	    fillColor: "#32CD32",
+	    color: "#000",
+	    weight: 1,
+	    opacity: 1,
+	    fillOpacity: 0.8
+	};
+
+		var indianHealthOptions = {
+	    radius: 3,
+	    fillColor: "#9B30FF",
+	    color: "#000",
+	    weight: 1,
+	    opacity: 1,
+	    fillOpacity: 0.8
+	};
+
+		function onEachFeature(feature, layer) {
+		    if (feature.properties && feature.properties.PROJECT_NAME) {
+		        layer.bindPopup(function() { return "Address: "+feature.properties.STD_ADDR + '</p>' + 'Housing Name: '+feature.properties.PROJECT_NAME});
+	    	}
+		}
+		function onEachFeaturefqhc(feature, layer) {
+		    if (feature.properties && feature.properties.SiteName) {
+		        layer.bindPopup(function() { return "Site Name: "+feature.properties.SiteName });
+	    	}
+		}
+
+		function onEachFeatureVA(feature, layer) {
+		    if (feature.properties && feature.properties.name) {
+		        layer.bindPopup(function() { return "Facility Name: "+feature.properties.name });
+			 }	
+		}
+
+		function onEachFeatureMedical(feature, layer) {
+		    if (feature.properties && feature.properties.Hospital_N) {
+		        layer.bindPopup(function() { return "Facility Name: "+feature.properties.Hospital_N });
+			 }	
+		}
+
+		function onEachFeatureHome(feature, layer) {
+		    if (feature.properties && feature.properties.ProviderNa) {
+		        layer.bindPopup(function() { return "Facility Name: "+feature.properties.ProviderNa });
+			 }	
+		}
+
+		function onEachFeatureHospital(feature, layer) {
+		    if (feature.properties && feature.properties.Name_new) {
+		        layer.bindPopup(function() { return "Hospital Name: "+feature.properties.Name_new });
+			 }	
+		}
+
+		function onEachFeatureIndianHealth(feature, layer) {
+		    if (feature.properties && feature.properties.Facility_N) {
+		        layer.bindPopup(function() { return "Facility Name: "+feature.properties.Facility_N });
+			 }	
+		}
+
+	//FQHC Data API to GeoJSON layer
+	var fqhcData = new L.GeoJSON.AJAX("https://open-fedmaps.opendata.arcgis.com/datasets/09a11bbc96c04f16bcb196dd2c521b71_0.geojson", {
+		onEachFeature: onEachFeaturefqhc,
+    	pointToLayer: function (feature, latlng) {
+ 	    return L.circleMarker(latlng, fqhcMarkerOptions)}
+ 		});       
+
+	//PHD Data API to GeoJSON layer
+	var data = new L.GeoJSON.AJAX("https://egis-hud.opendata.arcgis.com/datasets/5c96143f79c940a0a8cedae99a1ac562_0.geojson", {
+    onEachFeature: onEachFeature,
+   	pointToLayer: function (feature, latlng) {
+    return L.circleMarker(latlng, geojsonMarkerOptions);
+	}
+	});
+
+	//medical centers locations from HHS
+	var medicalData = new L.GeoJSON.AJAX("https://open-fedmaps.opendata.arcgis.com/datasets/7427f63124164c5aaaad4e5aa62bd3ee_0.geojson", {
+    onEachFeature: onEachFeatureMedical,
+   	pointToLayer: function (feature, latlng) {
+    return L.circleMarker(latlng, MedicalMarkerOptions);
+		}
+	});
+
+	//home health services api
+	var homeHealthData = new L.GeoJSON.AJAX("https://open-fedmaps.opendata.arcgis.com/datasets/b2105ae16fcd40e49879a24c4e40aca5_0.geojson", {
+    onEachFeature: onEachFeatureHome,
+   	pointToLayer: function (feature, latlng) {
+    return L.circleMarker(latlng, homeHealthOptions);
+		}
+	});
+	
+	//hospital data from HHS
+	var hospitalData = new L.GeoJSON.AJAX("https://open-fedmaps.opendata.arcgis.com/datasets/53b8031b906e43c4a4dbcf2250022ca0_0.geojson", {
+    onEachFeature: onEachFeatureHospital,
+   	pointToLayer: function (feature, latlng) {
+    return L.circleMarker(latlng, hospitalOptions);
+		}
+	});
+	
+	//Indian Health Services facility locations
+	var indianHealthData = new L.GeoJSON.AJAX("https://open-fedmaps.opendata.arcgis.com/datasets/51d35b4f55a241b6a6a2fc14d131f7d2_0.geojson", {
+    onEachFeature: onEachFeatureIndianHealth,
+   	pointToLayer: function (feature, latlng) {
+    return L.circleMarker(latlng, indianHealthOptions);
+		}
+	});
+
+	//VA Facility API request
+	var xhReq = new XMLHttpRequest();
+	xhReq.open("GET", "https://rawgit.com/department-of-veterans-affairs/VHA-Facilities/master/VAFacilityLocation.json", false);
+	xhReq.send(null);
+	var jsonObject = JSON.parse(xhReq.responseText);
+
+	//USE GeoJSON package to turn VA facility data into GeoJSON object
+	var VAFacilities = GeoJSON.parse(jsonObject["VAFacilityData"], {Point: ['latitude', 'longitude']});
+
+	var VAData = L.geoJSON(VAFacilities, {
+    onEachFeature: onEachFeatureVA,
+   	pointToLayer: function (feature, latlng) {
+    return L.circleMarker(latlng, VAMarkerOptions);
+	}
+	});
+
+	var myStyle = {
+    "color": "#3333FF",
+    "weight": 1,
+    "opacity": 0.5
+	};
+
+	function getColor(d) {
+	    return d > 0.9 ? '#7f0000' :
+	           d > 0.8  ? '#b30000' :
+	           d > 0.7  ? '#d7301f' :
+	           d > 0.6  ? '#ef6548' :
+	           d > 0.5   ? '#fc8d59' :
+	           d > 0.4   ? '#fdbb84' :
+	           d > 0.3   ? '#fdbb84' :
+	           d > 0.2   ? '#fdd49e' :
+	           d > 0.1   ? '#fee8c8' :
+	           				'#fff7ec' }
+
+
+	function style(feature) {
+	    return {
+	        fillColor: getColor(feature.properties.smoker_avg),
+	        weight: 0.5,
+	        opacity: 1,
+	        color: 'white',
+	        dashArray: '3',
+	        fillOpacity: 0.8
+	    };
+	}
+
+	function countyStyle(feature) {
+		return {
+			fillColor: getColor(feature.properties.smoker_avg),
+			weight: 0.5,
+			opacity: 1,
+			color: 'white',
+			dashArray: '3',
+			fillOpacity: 0.6
+		};
+	}
+
+	var countySmoker = L.geoJson(USCounties.features, {style: countyStyle})
+
+	var dataMaps = {
+		"Public Housing Developments (HUD)": data,
+		"Federally Qualified Health Centers (HHS)": fqhcData,
+		"Veterans Health Administration Facilities (VA)": VAData,
+		"Medical Centers (HHS)": medicalData,
+		"Home Health Services (HHS)": homeHealthData,
+		"Hospitals (HHS)": hospitalData,
+		"Healthcare Facilities (IHS)": indianHealthData,
+	    "County Smoker": countySmoker,
+	};
+
+	$('document').ready(function(){
+
+	var slidervar = document.getElementById('slider');
+
+	noUiSlider.create(slidervar, {
+		connect: true,
+		start: [ 0, 5300 ],
+		step: 1,
+		range: {
+			min: 0,
+			max: 5300
+		},
+		format: {
+		  to: function ( value ) {
+			return parseInt(value);
+		  },
+		  from: function ( value ) {
+			return parseInt(value);
+		  }
+		}
+
+	});
+
+	document.getElementById('input-number-min').setAttribute("value", 0);
+	document.getElementById('input-number-max').setAttribute("value", 5300);
+	var inputNumberMin = document.getElementById('input-number-min');
+	var inputNumberMax = document.getElementById('input-number-max');
+	var inputFormat = document.getElementById('input-format');
+	inputNumberMin.addEventListener('change', function(){
+		slidervar.noUiSlider.set([this.value.round(), null]);
+	});
+	inputNumberMax.addEventListener('change', function(){
+		slidervar.noUiSlider.set([null, this.value]);
+	});
+	slidervar.noUiSlider.on('update', function( values, handle ) {
+		if (handle==0){
+			document.getElementById('input-number-min').value = values[0];
+		} else {
+			document.getElementById('input-number-max').value =  values[1];
+		}
+		rangeMin = document.getElementById('input-number-min').value;
+		rangeMax = document.getElementById('input-number-max').value;
+		// first let's clear the layer:
+		// map.removeLayer(data);
+
+		// and repopulate it
+		// data = new L.GeoJSON.AJAX("https://egis-hud.opendata.arcgis.com/datasets/5c96143f79c940a0a8cedae99a1ac562_0.geojson", {
+		//     onEachFeature: onEachFeature,
+		//     filter:
+		// 		function(feature, layer) {
+		// 			 return (feature.properties.PEOPLE_TOTAL <= rangeMax) && (feature.properties.PEOPLE_TOTAL >= rangeMin);
+		// 		},
+		//    	pointToLayer: function (feature, latlng) {
+		//     return L.circleMarker(latlng, geojsonMarkerOptions);
+		// 	}
+		// 	});
+
+		data.refilter(
+			function(feature) {
+			 return (feature.properties.PEOPLE_TOTAL <= rangeMax) && (feature.properties.PEOPLE_TOTAL >= rangeMin);
+				}
+			)
+
+		//and back again into the cluster group
+		// map.addLayer(data);
+		dataOnClick();
+	});
+	})
+
+	counter = 1
+
+	function dataOnClick() {
+	data.on("click", function (event) {	
+
+	document.getElementById("arrow").innerHTML +=  "<div class=\"contentDiv\" id=\"contentDiv\" style=\"z-index:99;position:absolute;bottom: 0px;left:50%;\"><a href=\"#arrowDown\"><img class=\"arrow\" src=\"assets/down.png\" /></a></div>"
+
+	if (counter>=2) {document.getElementById("raceD3").innerHTML = '';}
+	if (counter>=2) {document.getElementById("ageD3").innerHTML = '';}
+	if (counter>=2) {document.getElementById("incomeD3").innerHTML = '';}
+	if (counter>=2) {document.getElementById("disabilityD3").innerHTML = '';}
+	if (counter>=2) {document.getElementById("genderD3").innerHTML = '';}
+	if (counter>=2) {document.getElementById("ROI1D3").innerHTML = '';}
+	if (counter>=2) {document.getElementById("ROI2").innerHTML = '';}
+	if (counter>=2) {document.getElementById("SmokerNum").innerHTML = '';}
+
+    var clickedMarker = event.layer;
+    // do some stuff…
+
+    e = clickedMarker.feature.properties
+
+    document.getElementById("PHAName").innerHTML =  e.PROJECT_NAME + '<br>'
+    document.getElementById("PHAInfo").innerHTML = '<p>Address: '+e.STD_ADDR + '</br>'
+												+ e.STD_CITY+", " + e.STD_ST+" "+e.STD_ZIP5 +'</p>' + 
+												'<p>Phone: ' + e.HA_PHN_NUM.substring(0,3)+'-'+e.HA_PHN_NUM.substring(3,6)+'-'+e.HA_PHN_NUM.substring(6,10) + '<p>' +
+												'<a href='+e.HA_EMAIL_ADDR_TEXT+'>'+e.HA_EMAIL_ADDR_TEXT+'</a></p>';
+    document.getElementById("residentCharacteristics").innerHTML = '<b>Resident Characteristics</b>';
+    document.getElementById("raceChartTitle").innerHTML = 'Ethnicity';
+    document.getElementById("incomeChartTitle").innerHTML = 'Income';
+    document.getElementById("disabilityChartTitle").innerHTML = 'Disability Status';
+    document.getElementById("genderChartTitle").innerHTML = 'Gender/Marital Status';
+    document.getElementById("ROITitle").innerHTML = 'Economic Benefits <a href="userGuide.html"><image src="assets/question-mark.png" height="5%"></a>';
+    document.getElementById("ROIExplanation1").innerHTML = '<i>Based on costs relevant to the public health and health care systems, such as the healthcare costs associated with tobacco use and secondhand smoke, and the cost of the following cessation interventions. For each dollar put in, we estimate the following amount gained:</i>'; 
+    document.getElementById("ROIExplanation2").innerHTML = '<i>Based on the reduction in costs relevant to the public housing system, such as the costs associated with smoking-related fires, we estimate the following additional costs savings per development per year:</i>'; 
+	document.getElementById("ROIChart1Title").innerHTML = 'State/Local Public Health Intervention <br>ROI Estimates<sup>*</sup>';
+	document.getElementById("ROIChart2Title").innerHTML = 'Public Housing Developments <br>Additional Cross-Sector Cost Savings Estimates';
+	document.getElementById("ROIFootnote").innerHTML = '<sup>*</sup>Please note that these ROI estimates do not include the cross-sector benefits to public housing developments that would also accrue due to reductions in their smoking-associated costs.<br><sup>**</sup>Nicotine Replacement Therapy';
+	document.getElementById("ROIFootnote2").innerHTML = '';
+	document.getElementById("smokerTitle").innerHTML = 'Residents and Smoking Estimates';
+	// <a href="userGuide.html"><image src="assets/question-mark.png" width="2.5%" height="2.5%"></a>
+
+	raceData = [
+    {"race": "Black ", "value": e.PCT_BLACK/100},
+    {"race": "Native American ", "value": e.PCT_NATIVE_AMERICAN/100 },
+    {"race": "Asian ", "value": e.PCT_ASIAN/100 },
+    {"race": "Hispanic ", "value": e.PCT_HISPANIC/100},
+    {"race": "White ", "value": 1 - e.PCT_MINORITY/100},
+	];
+
+		var margin = {top: 20, right: 90, bottom: 30, left: 90},
+		    width = 460 - margin.left - margin.right,
+		    height = 300 - margin.top - margin.bottom;
+
+		var formatPercent = d3.format(".0%");
+
+		// set the ranges
+		var y = d3.scaleBand()
+		          .range([height, 0])
+		          .padding(0.1);
+
+		var x = d3.scaleLinear()
+		          .range([0, width]);
+		          
+		// append the svg object to the body of the page
+		// append a 'group' element to 'svg'
+		// moves the 'group' element to the top left margin
+		var svg1 = d3.select("#raceD3").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", 
+		          "translate(" + margin.left + "," + margin.top + ")");
+
+		//define tooltip 
+	    var div = d3.select("#raceD3").append("div")	
+	    .attr("class", "tooltip")				
+	    .style("opacity", 0);
+
+
+		  // format the data
+		  raceData.forEach(function(d) {
+		    d.value = +d.value;
+		  });
+
+		  // Scale the range of the data in the domains
+		  x.domain([0, d3.max(raceData, function(d){ return d.value; })])
+		  y.domain(raceData.map(function(d) { return d.race; }));
+		  //y.domain([0, d3.max(data, function(d) { return d.sales; })]);
+
+		  // append the rectangles for the bar chart
+		  svg1.selectAll(".bar")
+		      .data(raceData)
+		    .enter().append("rect")
+		      .attr("class", "bar")
+		      //.attr("x", function(d) { return x(d.sales); })
+		      .attr("width", function(d) {return x(d.value); } )
+		      .attr("y", function(d) { return y(d.race); })
+		      .attr("height", y.bandwidth())
+		      .on("mouseover", function(d) {		
+	        div.transition()		
+	            .duration(200)		
+	            .style("opacity", .9);		
+	       	div.html((d.value*100).toFixed(2) + "% Residents")	
+	            .style("left", (d3.event.pageX) + "px")		
+	            .style("top", (d3.event.pageY - 28) + "px");
+	        })	
+		    .on("mouseout", function(d) {		
+		        div.transition()		
+		            .duration(500)		
+		            .style("opacity", 0);
+		            });	
+
+
+		  // add the x Axis
+		  svg1.append("g")
+		      .attr("transform", "translate(0," + height + ")")
+		      .call(d3.axisBottom(x).tickFormat(formatPercent));
+
+		  // add the y Axis
+		  svg1.append("g")
+		      .call(d3.axisLeft(y));
+
+
+    document.getElementById("ageChartTitle").innerHTML = 'Age';
+
+	ageData = [
+	    {"age": "<24 ", "value": e.PCT_LT24_HEAD/100},
+	    {"age": "25-50 ", "value": e.PCT_AGE_25_50/100},
+	    {"age": "51-61 ", "value": e.PCT_AGE51_61/100},
+	    {"age": "62+ ", "value": e.PCT_AGE62PLUS/100},
+	];
+
+		  // set the dimensions and margins of the graph
+		var margin = {top: 20, right: 90, bottom: 30, left: 90},
+		    width = 460 - margin.left - margin.right,
+		    height = 300 - margin.top - margin.bottom;
+
+		var formatPercent = d3.format(".0%");
+
+		// set the ranges
+		var y = d3.scaleBand()
+		          .range([height, 0])
+		          .padding(0.1);
+
+		var x = d3.scaleLinear()
+		          .range([0, width]);
+		          
+		// append the svg object to the body of the page
+		// append a 'group' element to 'svg'
+		// moves the 'group' element to the top left margin
+		var svg2 = d3.select("#ageD3").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", 
+		          "translate(" + margin.left + "," + margin.top + ")");
+
+		//div for tooltip
+	    var div2 = d3.select("#ageD3").append("div")	
+	    .attr("class", "tooltip")				
+	    .style("opacity", 0);
+
+
+		  // format the data
+		  ageData.forEach(function(d) {
+		    d.value = +d.value;
+		  });
+
+		  // Scale the range of the data in the domains
+		  x.domain([0, d3.max(ageData, function(d){ return d.value; })])
+		  y.domain(ageData.map(function(d) { return d.age; }));
+		  //y.domain([0, d3.max(data, function(d) { return d.sales; })]);
+
+		  // append the rectangles for the bar chart
+		  svg2.selectAll(".bar2")
+		      .data(ageData)
+		    .enter().append("rect")
+		      .attr("class", "bar2")
+		      //.attr("x", function(d) { return x(d.sales); })
+		      .attr("width", function(d) {return x(d.value); } )
+		      .attr("y", function(d) { return y(d.age); })
+		      .attr("height", y.bandwidth())
+		      .on("mouseover", function(d) {		
+		        div2.transition()		
+		            .duration(200)		
+		            .style("opacity", .9);		
+		       	div2.html((d.value*100).toFixed(2) + "% Residents")	
+		            .style("left", (d3.event.pageX) + "px")		
+		            .style("top", (d3.event.pageY - 28) + "px");
+		        })	
+			    .on("mouseout", function(d) {		
+			        div2.transition()		
+			            .duration(500)		
+			            .style("opacity", 0);
+			            });	
+
+		  // add the x Axis
+		  svg2.append("g")
+		      .attr("transform", "translate(0," + height + ")")
+		      .call(d3.axisBottom(x).tickFormat(formatPercent));
+
+		  // add the y Axis
+		  svg2.append("g")
+		      .call(d3.axisLeft(y));
+
+/////////////////////
+	incomeData = [
+	    {"income": "<5K ", "value": e.PCT_LT5k/100},
+	    {"income": "5K-10K ", "value": e.PCT_5K_LT10K/100},
+	    {"income": "10K-15K ", "value": e.PCT_10K_LT15K/100},
+	    {"income": "15K-20K ", "value": e.PCT_15K_LT20K/100},
+	    {"income": ">20K ", "value": e.PCT_GE20K/100},
+	];
+
+		var yIncome = d3.scaleBand()
+		          .range([height, 0])
+		          .padding(0.1);
+
+		var xIncome = d3.scaleLinear()
+		          .range([0, width]);
+		          
+		// append the svg object to the body of the page
+		// append a 'group' element to 'svg'
+		// moves the 'group' element to the top left margin
+		var svgIncome = d3.select("#incomeD3").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", 
+		          "translate(" + margin.left + "," + margin.top + ")");
+
+		//div for tooltip
+	    var divIncome = d3.select("#incomeD3").append("div")	
+	    .attr("class", "tooltip")				
+	    .style("opacity", 0);
+
+
+		  // format the data
+		  incomeData.forEach(function(d) {
+		    d.value = +d.value;
+		  });
+
+		  // Scale the range of the data in the domains
+		  xIncome.domain([0, d3.max(incomeData, function(d){ return d.value; })])
+		  yIncome.domain(incomeData.map(function(d) { return d.income; }));
+		  //y.domain([0, d3.max(data, function(d) { return d.sales; })]);
+
+		  // append the rectangles for the bar chart
+		  svgIncome.selectAll(".bar2")
+		      .data(incomeData)
+		    .enter().append("rect")
+		      .attr("class", "bar2")
+		      //.attr("x", function(d) { return x(d.sales); })
+		      .attr("width", function(d) {return xIncome(d.value); } )
+		      .attr("y", function(d) { return yIncome(d.income); })
+		      .attr("height", yIncome.bandwidth())
+		      .on("mouseover", function(d) {		
+		        divIncome.transition()		
+		            .duration(200)		
+		            .style("opacity", .9);		
+		       	divIncome.html((d.value*100).toFixed(2) + "% Residents")	
+		            .style("left", (d3.event.pageX) + "px")		
+		            .style("top", (d3.event.pageY - 28) + "px");
+		        })	
+			    .on("mouseout", function(d) {		
+			        divIncome.transition()		
+			            .duration(500)		
+			            .style("opacity", 0);
+			            });	
+
+		  // add the x Axis
+		  svgIncome.append("g")
+		      .attr("transform", "translate(0," + height + ")")
+		      .call(d3.axisBottom(xIncome).tickFormat(formatPercent));
+
+		  // add the y Axis
+		  svgIncome.append("g")
+		      .call(d3.axisLeft(yIncome));
+//////////////////////////////
+	disabilityData = [
+	    {"category": "All Household Members ", "value": e.PCT_DISABLED_ALL/100},
+	    {"category": "Age <62yrs, Household Head ", "value": e.PCT_DISABLED_LT62/100},
+	    {"category": "Age >62yrs, Household Head  ", "value": e.PCT_DISABLED_GE62/100},
+	];
+
+		var yDisability = d3.scaleBand()
+		          .range([height, 0])
+		          .padding(0.1);
+
+		var xDisability = d3.scaleLinear()
+		          .range([0, width]);
+		          
+		// append the svg object to the body of the page
+		// append a 'group' element to 'svg'
+		// moves the 'group' element to the top left margin
+		var svgDisability = d3.select("#disabilityD3").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", 
+		          "translate(145," + margin.top + ")");
+
+		//div for tooltip
+	    var divDisability = d3.select("#disabilityD3").append("div")	
+	    .attr("class", "tooltip")				
+	    .style("opacity", 0);
+
+		  // format the data
+		  disabilityData.forEach(function(d) {
+		    d.value = +d.value;
+		  });
+
+		  // Scale the range of the data in the domains
+		  xDisability.domain([0, d3.max(disabilityData, function(d){ return d.value; })])
+		  yDisability.domain(disabilityData.map(function(d) { return d.category; }));
+
+		  // append the rectangles for the bar chart
+		  svgDisability.selectAll(".bar")
+		      .data(disabilityData)
+		    .enter().append("rect")
+		      .attr("class", "bar")
+		      //.attr("x", function(d) { return x(d.sales); })
+		      .attr("width", function(d) {return xDisability(d.value); } )
+		      .attr("y", function(d) { return yDisability(d.category); })
+		      .attr("height", yDisability.bandwidth())
+		      .on("mouseover", function(d) {		
+		        divDisability.transition()		
+		            .duration(200)		
+		            .style("opacity", .9);		
+		       	divDisability.html((d.value*100).toFixed(2) + "% Residents")	
+		            .style("left", (d3.event.pageX) + "px")		
+		            .style("top", (d3.event.pageY - 28) + "px");
+		        })	
+			    .on("mouseout", function(d) {		
+			        divDisability.transition()		
+			            .duration(500)		
+			            .style("opacity", 0);
+			            });	
+
+		  // add the x Axis
+		  svgDisability.append("g")
+		      .attr("transform", "translate(0," + height + ")")
+		      .call(d3.axisBottom(xDisability).tickFormat(formatPercent));
+
+		  // add the y Axis
+		  svgDisability.append("g")
+		      .call(d3.axisLeft(yDisability));
+//////////////////////////////
+	genderData = [
+	    {"category": "Two spouses, 1+ Child ", "value": e.PCT_2ADULTS/100}, //GenMaChild1
+	    {"category": "Single Female, 1+ Child ", "value": e.PCT_FEMALE_HEAD_CHILD/100},
+	    {"category": "Single Female, 0 Children ", "value": (e.PCT_FEMALE_HEAD - e.PCT_FEMALE_HEAD_CHILD)/100},
+	    {"category": "Single Male, 1+ Child ", "value": Math.max(0,(e.PCT_1ADULT - e.PCT_FEMALE_HEAD_CHILD)/100)},
+	    {"category": "Single Male/2 Spouses, 0 Children", "value": 1 - 
+	    (e.PCT_2ADULTS + e.PCT_FEMALE_HEAD - Math.max(0,(e.PCT_1ADULT - e.PCT_FEMALE_HEAD_CHILD)))/100 },
+
+	];
+
+		var yGender = d3.scaleBand()
+		          .range([height, 0])
+		          .padding(0.1);
+
+		var xGender = d3.scaleLinear()
+		          .range([0, width]);
+		          
+		// append the svg object to the body of the page
+		// append a 'group' element to 'svg'
+		// moves the 'group' element to the top left margin
+		var svgGender = d3.select("#genderD3").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", 
+		          "translate(165," + margin.top + ")");
+
+		//div for tooltip
+	    var divGender = d3.select("#genderD3").append("div")	
+	    .attr("class", "tooltip")				
+	    .style("opacity", 0);
+
+		  // format the data
+		  genderData.forEach(function(d) {
+		    d.value = +d.value;
+		  });
+
+		  // Scale the range of the data in the domains
+		  xGender.domain([0, d3.max(genderData, function(d){ return d.value; })])
+		  yGender.domain(genderData.map(function(d) { return d.category; }));
+
+		  // append the rectangles for the bar chart
+		  svgGender.selectAll(".bar")
+		      .data(genderData)
+		    .enter().append("rect")
+		      .attr("class", "bar")
+		      //.attr("x", function(d) { return x(d.sales); })
+		      .attr("width", function(d) {return xGender(d.value); } )
+		      .attr("y", function(d) { return yGender(d.category); })
+		      .attr("height", yGender.bandwidth())
+		      .on("mouseover", function(d) {		
+		        divGender.transition()		
+		            .duration(200)		
+		            .style("opacity", .9);		
+		       	divGender.html((d.value*100).toFixed(2) + "% Residents")	
+		            .style("left", (d3.event.pageX) + "px")		
+		            .style("top", (d3.event.pageY - 28) + "px");
+		        })	
+			    .on("mouseout", function(d) {		
+			        divGender.transition()		
+			            .duration(500)		
+			            .style("opacity", 0);
+			            });	
+
+		  // add the x Axis
+		  svgGender.append("g")
+		      .attr("transform", "translate(0," + height + ")")
+		      .call(d3.axisBottom(xGender).tickFormat(formatPercent));
+
+		  // add the y Axis
+		  svgGender.append("g")
+		      .call(d3.axisLeft(yGender));
+//////////////////////////////
+
+		 counter = counter + 1
+
+
+		 //create the first ROI Chart
+		 sl = ROI_STATELOCAL['housing'][0][e.OBJECTID]
+
+
+		 //State and Local health ROI
+		 var ROI1Data = [
+	  {"title":"4 Weeks NRT**","value":sl.ROI4STATE, "iter": 1},
+	  {"title":"8 Weeks NRT","value":sl.ROI8STATE, "iter": 2},
+	  {"title":"Group Counseling","value":sl.ROIGCSTATE, "iter": 3},
+	  {"title":"Billboard Campaign","value":sl.ROIBILLSTATE, "iter": 4},
+	];
+
+	var margin2 = {top: 20, right: 30, bottom: 40, left: 80},
+	    width = 310 - margin.left - margin.right,
+	    height = 300 - margin.top - margin.bottom;
+
+	//create svg canvas for ROI     
+	var svg3 = d3.select("#ROI1D3").append("svg")
+	    .attr("width", width + margin2.left + margin2.right)
+	    .attr("height", height + margin2.top + margin2.bottom)
+	  .append("g")
+	    .attr("transform", 
+	          "translate(" + 40 + "," + 0 + ")");
+
+
+
+   var elem = svg3.selectAll("g myCircleText")
+        .data(ROI1Data)
+  
+    /*Create and place the "blocks" containing the circle and the text */  
+    var elemEnter = elem.enter()
+	    .append("g")
+	    .attr("transform", function(d){return "translate(0," + d.iter*70 +")"});
+ 
+ 	function ROIColor(d){
+ 		return d >=0 ? "#a3d586" : "#ff6961"
+ 	};
+ 	//pastel green hex: #66f1b8
+
+
+    /*Create the circle for each block */
+    var circle = elemEnter.append("circle")
+	    .attr("r", function(d) {return 30; } )
+	    .attr("class","circle")
+	    .style("fill", function(d) {return ROIColor(d.value)});
+ 
+    /* Create the text for each block */
+    elemEnter.append("text")
+	    .attr("dx", function(d){return -16})
+	    .attr("dy", function(d){return 5})
+	    .style("font-weight", "bold")
+	    .text(function(d){return '$'+parseFloat(d.value).toFixed(2) })
+
+    elemEnter.append("text")
+	    .attr("dx", function(d){return 50})
+	    .attr("dy", function(d){return 5})
+	    .text(function(d){return d.title + " ROI"})
+
+	   //PHD Level ROI Data 
+	var phdroi = ROI_PHD['housing'][0][e.OBJECTID];
+
+    document.getElementById("ROI2").innerHTML = `<table> 
+    		<tr>
+    			<td></td>
+    			<td><b>4 Weeks NRT</b></td>
+    			<td><b>8 Weeks NRT</b></td>
+    			<td><b>Group Counseling</b></td>
+   			</tr>
+    		<tr bgcolor="#d3d3d3">
+    			<td><b>Fire Savings</b></td>
+    			<td>$`+ (phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_4).toFixed(2) + `</td>
+    			<td>$`+ (phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_8).toFixed(2) +`</td>
+    			<td>$`+ (phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_GC).toFixed(2)+`</td>
+   			</tr>
+    		<tr>
+    			<td><b>Turnover Savings</b></td>
+    			<td>$`+ (phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_4).toFixed(2)+`</td>
+    			<td>$`+ (phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_8).toFixed(2)+`</td>
+    			<td>$`+ (phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_GC).toFixed(2)+`</td>
+   			</tr>
+    		<tr bgcolor="#d3d3d3">
+    			<td><b>Eviction Savings</b></td>
+    			<td>$`+ (phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_4).toFixed(2) +`</td>
+    			<td>$`+ (phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_8).toFixed(2)+`</td>
+    			<td>$`+ (phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_GC).toFixed(2)+`</td>
+   			</tr>
+    		<tr>
+    			<td><b>Total Savings</b></td>
+    			<td>$`+ ((phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_4)+(phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_4)+(phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_4)).toFixed(2)+`</td>
+    			<td>$`+ ((phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_8)+(phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_8)+(phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_8)).toFixed(2)+`</td>
+    			<td>$`+ ((phdroi.FIRE_COST_YEAR - phdroi.FIRE_COST_YEAR_INT_GC)+(phdroi.TURNOVER_COST_YEAR - phdroi.TURNOVER_COST_YEAR_INT_GC)+(phdroi.EVICTION_COST_YEAR - phdroi.EVICTION_COST_YEAR_INT_GC)).toFixed(2)+`</td>
+   			</tr>
+
+   		 </table>`;
+
+
+	var margin = {top: 20, right: 20, bottom: 70, left: 40},
+    width = 500 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+
+	var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+	    y = d3.scaleLinear().rangeRound([height, 0]);
+
+	var svg5 = d3.select("#SmokerNum").append("svg")
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+	    .attr("transform", 
+	          "translate(" + 40 + "," + 0 + ")");
+
+    var div3 = d3.select("#SmokerNum").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
+	  smokerData = [
+	  	{"title": "Total Adults", 'value': phdroi.NUM_ADULTS},
+	  	{"title": "Total Children", 'value': phdroi.NUM_CHILDREN},
+	  	{"title": "Estimated Adult Smokers", 'value': phdroi.ESTIMATED_ADULT_SMOKERS},
+	  ];
+		
+	  x.domain(smokerData.map(function(d) { return d.title; }));
+	  y.domain([0, d3.max(smokerData, function(d) { return d.value; })]);
+
+	var g = svg5.append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+	  x.domain(smokerData.map(function(d) { return d.title; }));
+	  y.domain([0, d3.max(smokerData, function(d) { return d.value; })]);
+
+	  g.append("g")
+	      .attr("class", "axis axis--x")
+	      .attr("transform", "translate(0," + height + ")")
+	      .call(d3.axisBottom(x));
+
+	  g.append("g")
+	      .attr("class", "axis axis--y")
+	      .call(d3.axisLeft(y).ticks(10))
+	    .append("text")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", "0.71em")
+	      .attr("text-anchor", "end")
+	      .text("Frequency");
+
+	  g.selectAll(".bar")
+	    .data(smokerData)
+	    .enter().append("rect")
+	      .attr("class", function(d) {return d.title=="Estimated Adult Smokers" ? "bar3" : "bar"})
+	      .attr("x", function(d) { return x(d.title); })
+	      .attr("y", function(d) { return y(d.value); })
+	      .attr("width", x.bandwidth())
+	      .attr("height", function(d) { return height - y(d.value); })
+	      .on("mouseover", function(d) {		
+	        div3.transition()		
+	            .duration(200)		
+	            .style("opacity", .9);		
+	       	div3.html((d.value).toFixed(0) + " Residents")	
+	            .style("left", (d3.event.pageX) + "px")		
+	            .style("top", (d3.event.pageY - 28) + "px");
+	        })	
+		    .on("mouseout", function(d) {		
+		        div3.transition()		
+		            .duration(500)		
+		            .style("opacity", 0);
+		            });		      
+		  
+
+	}); } //close on click event
+	// solid color option for counties
+
+
+	var map = L.map('mapid', {
+    center: [39.828, -98.579],
+    zoom: 4,
+    layers: [],  //fqhcData, VAData
+    maxZoom: 18,
+    scrollWheelZoom: false
+});
+
+	map.on('overlayremove', onOverlayRemove);
+
+	function onOverlayRemove(e){
+		if (e.name=="County Smoker") {document.getElementById("countyLevel").checked = false;}
+		if (e.name=="Public Housing Developments (HUD)") {document.getElementById("PHD").checked = false;}
+		if (e.name=="Federally Qualified Health Centers (HHS)") {document.getElementById("FQHC").checked = false;}
+		if (e.name=="Veterans Health Administration Facilities (VA)") {document.getElementById("VAF").checked = false;}
+		if (e.name=="Medical Centers (HHS)") {document.getElementById("Medical").checked = false;}
+		if (e.name=="Home Health Services (HHS)") {document.getElementById("homeHealth").checked = false;}
+		if (e.name=="Hospitals (HHS)") {document.getElementById("hospital").checked = false;}
+		if (e.name=="Healthcare Facilities (IHS)") {document.getElementById("indianHealth").checked = false;}
+	}
+
+	map.on('overlayadd', onOverlayAdd);
+
+	function onOverlayAdd(e){
+			console.log(e);
+		if (e.name=="County Smoker") {document.getElementById("countyLevel").checked = true;};
+		if (e.name=="Public Housing Developments (HUD)") {document.getElementById("PHD").checked = true;};
+		if (e.name=="Federally Qualified Health Centers (HHS)") {document.getElementById("FQHC").checked = true;};
+		if (e.name=="Veterans Health Administration Facilities (VA)") {document.getElementById("VAF").checked = true;};
+		if (e.name=="Medical Centers (HHS)") {document.getElementById("Medical").checked = true;};
+		if (e.name=="Home Health Services (HHS)") {document.getElementById("homeHealth").checked = true;};
+		if (e.name=="Hospitals (HHS)") {document.getElementById("hospital").checked = true;};
+		if (e.name=="Healthcare Facilities (IHS)") {document.getElementById("indianHealth").checked = true;};
+	}
+
+
+	//add full screen toggle control (github addon)
+	map.addControl(new L.Control.Fullscreen());
+
+	//scroll to zoom after clicking
+	map.once('focus', function() { map.scrollWheelZoom.enable(); });
+
+
+
+	data.addTo(map);
+	countySmoker.addTo(map);
+	Lcontrol = L.control.layers(null, dataMaps).addTo(map);
+
+	// Mapbox layer that connects to Mapbox API and provides streets light tiles
+	L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ3Rvc2hob3VzaW5nbWFwIiwiYSI6ImNqMXFhaWthdjAwOW8zMm92eWJ0dHYzdncifQ.j0mSMLDXAd0dKCNqr_BQYg', {
+	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+	maxZoom: 18
+	}).addTo(map);
+
+	// watercolor tiles
+	// L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg').addTo(map);
+
+	var legend = L.control({position: 'bottomright'});
+
+	legend.onAdd = function (map) {
+
+
+		var div = L.DomUtil.create('div', 'info legend'),
+			grades = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+			labels = ['<strong>HUD Smoker Proportion</strong>'],
+			from, to;
+
+		for (var i = 0; i < grades.length; i++) {
+			from = grades[i];
+			to = grades[i + 1];
+
+			labels.push(
+				'<i style="background:' + getColor(from + 0.01) + '"></i> ' +
+				from + (to ? '&ndash;' + to : '+'));
+		}
+
+		div.innerHTML = labels.join('<br>');
+		return div;
+	};
+
+	legend.addTo(map);
+
+	var legend2 = L.control({position: 'bottomleft'});
+
+	legend2.onAdd = function (map) {
+
+		function makeCircle(fill) {
+			var height=16,
+			width=21,
+			cx=9,
+			cy=9,
+			r=6
+
+		return "<svg height=\""+height+"\" width=\""+width+"\"><circle cx=\""+cx+"\" cy=\""+cy+"\" r=\""+r+"\" stroke=\"#000\" stroke-width=\"1px\" fill=\"#"+fill+"\"/></svg>"
+		}
+
+		var div2 = L.DomUtil.create('div', 'info legend'),
+			labels2 = [makeCircle("33FFCE")+"<strong>Public Housing Developments (HUD)</strong>",
+						makeCircle("FFCE33")+'</svg><strong>Federally Qualified Health Centers (HHS)</strong>',
+						makeCircle("FF0000")+'<strong>Veterans Health Administration Facilities (VA)</strong>',
+						makeCircle("035096")+'<strong>Medical Centers (HHS)</strong>',
+						makeCircle("E6E6FA")+'<strong>Home Health Services (HHS)</strong>',
+						makeCircle("32CD32")+'<strong>Hospitals (HHS)</strong>',
+						makeCircle("9B30FF")+'<strong>Healthcare Facilities (IHS)</strong>'	
+						]
+
+
+		div2.innerHTML = labels2.join('</br>');
+		return div2;
+	};
+
+	legend2.addTo(map);
+
+	</script>
+
+
+<div id='map'></div>
+
+<!-- <div class="smallLine"></div> -->
+<div class="divider"></div>
+<!-- <div class="grid-container">
+
+<!-- Open: #building-fltr-opts -->
+<div id="building-fltr-opts">
+<div class="fltr-opts">
+<!-- OPEN: grid 12-col -->
+<div class="grid-container" style="margin-top:10px;">
+<div id = "arrow"></div>
+<div class="clear"></div>
+<div class="grid-15">
+<div>
+	<b style="font-size:18px;">Datasets </b><a href="userGuide.html"><image src="assets/question-mark.png" width="8%" height="8%"></a>
+	<hr>
+	<div><input type='checkbox' name='filters' onclick='showPHD();' value='VAData' id="PHD" checked> Public Housing Developments (HUD)</div>
+	<div><input type='checkbox' name='filters' onclick='showFQHC();' value='green' id="FQHC" > Federally Qualified Health Centers (HHS)</div>
+	<div><input type='checkbox' name='filters' onclick='showVAF();' value='VAData' id="VAF" > Veterans Health Administration Facilities (VA)</div>
+	<div><input type='checkbox' name='filters' onclick='showMedical();' value='medicalData' id="Medical" > Medical Centers (HHS)</div>
+	<div><input type='checkbox' name='filters' onclick='showHomeHealth();' value='homeHealthData' id="homeHealth" > Home Health Services (HHS)</div>
+	<div><input type='checkbox' name='filters' onclick='showHospital();' value='hospitalData' id="hospital" > Hospitals (HHS)</div>
+	<div><input type='checkbox' name='filters' onclick='showIndianHealth();' value='indianHealthData' id="indianHealth" > Healthcare Facilities (IHS)</div>
+</div>
+
+</div> <!-- CLOSE: grid 12 col -->
+<div style="float:left;">
+	<b style="font-size:18px">Layers</b>
+	<hr>
+	<div><input type='checkbox' name='filters' onclick='showCounties();' value='countyLevel' id="countyLevel" checked> County Avg HUD Smokers</div>
+
+</div>
+
+<div style="display: inline-block; margin-left:20px;">
+
+	<b style="font-size:18px">Filter public housing developments by total number of residents</b>
+	<hr>
+
+	<div id="slider" style="top: 0px; right: 1px; margin: 10px 25px; width:700px"></div>
+	<div style="margin-right: auto; margin-left: auto; width: 50%; margin-bottom: 10px; text-align: center;">
+	<input style="width: 45px; height:25px; font-size:12px;" type="number" min='1' max='9' step='1' id="input-number-min">
+	<input style="width: 45px; height:25px; font-size:12px;" type="number" min='2' max='10' step='1' id="input-number-max">
+	</div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+</div>
+</div> <!-- Close: #building-fltr-opts -->
+
+
+
+<!-- Open: #building-fltr-opts -->
+<div id="building-fltr-opts">
+<div class="fltr-opts">
+<!-- OPEN: grid 12-col -->
+<div class="grid-container">
+
+
+<div class="clear"></div>
+<br><br>
+<div id="arrowDown" style='float:left; margin:0 auto; width:80%;'>
+
+	<div style="float:left; margin:0px 30px 0px 20px">
+		<div class="PHAinfo" id="PHAName">
+		</div> 
+		<div class="PHAinfo2" id="PHAInfo">
+		</div>
+	</div>
+
+	<table >
+	  <tr>
+	    <td id="residentCharacteristics" colspan="2" class="info2" style="padding-bottom:20px;"></t>
+	  </tr>
+	  <tr>
+	    <td class="subtitle" id="raceChartTitle"></td>
+	    <td class="subtitle" id="ageChartTitle"></td>
+	  </tr>
+	  <tr>
+	    <td id="raceD3"></td>
+	    <td id="ageD3"></td>
+ 	  </tr>
+	</table>
+
+	<table >
+	  <tr>
+	    <td class="subtitle" id="incomeChartTitle"></td>
+	    <td class="subtitle" id="disabilityChartTitle"></td>
+	  </tr>
+	  <tr>
+	    <td id="incomeD3"></td>
+	    <td id="disabilityD3"></td>
+ 	  </tr>
+	</table>
+
+	<table >
+	  <tr>
+	    <td class="subtitle" id="genderChartTitle"></td>
+		<td id="smokerTitle" class="subtitle" valign="top" style="padding-top:10px"></td>
+	  </tr>
+	  <tr>
+	    <td id="genderD3"></td>
+		<td id="SmokerNum"></td>
+ 	  </tr>
+	</table>
+
+</div>
+
+</div> <!-- CLOSE: grid 12 col -->
+</div>	
+</div> <!-- Close: #building-fltr-opts -->
+
+<div style="margin-left:20px; margin-right:20px;">
+	<table class="equalDivide">
+		<tr>
+			<td id="ROITitle" class="info2" colspan="2" style="padding-top:20px;"></td>
+		</tr>
+
+		<tr>
+			<td id="ROIChart1Title" class="subtitle" valign="top" style="padding-top:10px"></td>
+			<td id="ROIChart2Title" class="subtitle" valign="top" style="padding-top:10px"></td>
+		</tr>
+		<tr>
+			<td id="ROIExplanation1" valign="top"></td>
+			<td id="ROIExplanation2" valign="top"></td>
+		</tr>
+		<tr>
+			<td id="ROI1D3"></td>
+			<td id="ROI2"></td>
+		</tr>	
+ 	  <tr>
+ 	  	<td id="ROIFootnote" valign="top" class="footnote" style="padding-top:20px;"></td>
+ 	  	<td id="ROIFootnote2" valign="top" class="footnote" style="padding-top:20px;"></td>
+ 	  </tr>			
+	</table>
+</div>
+
+<div style="clear:both;"></div>
+<form id='colors'>
+</form>
+
+<script>
+	
+	function showVAF() {var VAF= document.getElementById("VAF");       
+    if(VAF.checked == true){map.addLayer(VAData);}
+ 	if(VAF.checked==false){map.removeLayer(VAData);	}};
+
+ 	function showPHD() {var PHD= document.getElementById("PHD");       
+    if(PHD.checked == true){map.addLayer(data);}
+ 	if(PHD.checked==false){map.removeLayer(data);	}};
+
+ 	function showFQHC() {var FQHC= document.getElementById("FQHC");       
+    if(FQHC.checked == true){map.addLayer(fqhcData);}
+ 	if(FQHC.checked==false){map.removeLayer(fqhcData);	}};
+
+ 	function showMedical() {var Medical= document.getElementById("Medical");       
+    if(Medical.checked == true){map.addLayer(medicalData);}
+ 	if(Medical.checked==false){map.removeLayer(medicalData); }};
+
+ 	function showHomeHealth() {var homeHealth= document.getElementById("homeHealth");       
+    if(homeHealth.checked == true){map.addLayer(homeHealthData);}
+ 	if(homeHealth.checked==false){map.removeLayer(homeHealthData); }};
+
+ 	function showHospital() {var hopsital= document.getElementById("hospital");       
+    if(hospital.checked == true){map.addLayer(hospitalData);}
+ 	if(hospital.checked==false){map.removeLayer(hospitalData); }};
+
+ 	function showIndianHealth() {var indianHealth= document.getElementById("indianHealth");       
+    if(indianHealth.checked == true){map.addLayer(indianHealthData);}
+ 	if(indianHealth.checked==false){map.removeLayer(indianHealthData); }};
+
+ 	function showCounties() {var countyData= document.getElementById("countyLevel");       
+    if(countyData.checked == true){map.addLayer(countySmoker);}
+ 	if(countyData.checked==false){map.removeLayer(countySmoker); }};
+
+</script>
+
+	<footer class="footer-basic-centered">
+
+		<p class="footer-company-motto">Georgia Tech Senior Design</p>
+
+		<p class="footer-links">
+			<a href="index.html">Home</a>
+			·
+			<a href="maps.html">Maps</a>
+			·
+			<a href="userGuide.html">User Guide</a>
+			·
+			<a href="publicHousing.html">Public Housing</a>
+			·
+			<a href="about.html">About</a>
+			·
+			<a href="glossary.html">Glossary</a>
+			·
+			<a href="contact.html">Contact</a>
+		</p>
+
+		<p class="footer-company-name">Extinguish Tool 2017</p>
+		<br><p class='footer-company-name' style='margin:0 auto; width:50%'>The CDC Office of Smoking and Health and the CDC Office of the Associate Director for Science provided expertise and guidance for the development of the Extinguish tool in the support of the implementation of HUD’s Smoke-free policy.  However, CDC does not endorse private products, services or enterprises.</p>
+
+	</footer>
+
+</body>
+
+</html>

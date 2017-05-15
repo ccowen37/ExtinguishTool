@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Extinguish Tool User Guide</title>
+
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="assets/demo.css">
+	<link rel="stylesheet" href="assets/header-basic-light.css">
+	<link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/footer-basic-centered.css">
+	<link rel="stylesheet" href="css/responsive-grid.css">
+</head>
+<style>
+.dropbtn {
+    background-color: transparent;
+    color: #5c616a;
+    /*padding: 16px;*/
+    border: none;
+    cursor: pointer;
+	text-decoration: none;
+	font:15px 'Roboto', sans-serif;
+	display: inline-block;
+	padding: 0 5px;
+	opacity: 0.9;
+	line-height:1;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:1;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.divider {
+	height: 25px;
+    width: 100%;
+    background-color: darkseagreen;
+}
+.smallLine {
+	height: 5px;
+	width: 100%;
+}
+
+.PHAinfo {
+	font:20px Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+
+}
+
+.PHAinfo2 {
+	font:15px Arial, Helvetica, sans-serif;
+	color: black;
+}
+
+.subtitle {
+	font:15px Arial, Helvetica, sans-serif;
+	color: black;
+	font-weight: bold;
+
+}
+
+
+</style>
+<body>
+
+<header class="header-basic-light">
+
+	<div class="header-limiter">
+
+		<h1><a href="index.html">Extinguish<span>Tool</span></a></h1>
+
+		<nav>
+			<a href="index.html">Home</a>
+			<div class="dropdown">
+		    <button class="dropbtn">Maps</button>
+			    <div class="dropdown-content">
+			    	<a href="map1.html">Smoking Estimates</a><br>
+					<a href="map2.html">Medicaid Data</a><br>
+					<a href="map3.html">Quitline Data</a>
+			    </div>
+			</div>
+			<a href="userGuide.html" class="selected">User Guide</a>
+			<a href="publicHousing.html">Public Housing</a>
+			<a href="about.html">About</a>
+			<a href="glossary.html">Glossary</a>
+			<a href="contact.html">Contact</a>
+		</nav>
+	</div>
+
+</header>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+</head>
+
+<body>
+
+<div style="margin: 20px 20px 20px 20px">
+<p>
+<span class="dropcap">T</span>he data for the database has multiple sources. In the smoker identification process, our team primarily used the <a href="https://www.cdc.gov/brfss/">Behavioral Risk Factor Surveillance System</a> (BRFSS) dataset and the <a href="https://egis-hud.opendata.arcgis.com/datasets/5c96143f79c940a0a8cedae99a1ac562_0">Public Housing Developments</a> dataset from the U.S. Department of Urban Housing and Development (HUD). Additional datasets we used to assist with our analysis include <a href="https://www.huduser.gov/portal/datasets/il.html">HUD Income Limits</a>, and State Cigarette Excise Tax Rate. 
+<p>
+The following datasets were used for <a href="index.html">mapping</a>: 
+</p>
+<ul>
+	<li><a href="https://egis-hud.opendata.arcgis.com/datasets/5c96143f79c940a0a8cedae99a1ac562_0">Public Housing Developments</a>: </li>
+	<li><a href="http://open-fedmaps.opendata.arcgis.com/datasets/09a11bbc96c04f16bcb196dd2c521b71_0">Federally Qualified Health Centers</a></li>
+	<li><a href="http://open-fedmaps.opendata.arcgis.com/datasets/53b8031b906e43c4a4dbcf2250022ca0_0">Medical Centers</a></li>
+	<li><a href="http://open-fedmaps.opendata.arcgis.com/datasets/53b8031b906e43c4a4dbcf2250022ca0_0">Hospitals</a></li>
+	<li><a href="http://open-fedmaps.opendata.arcgis.com/datasets/b2105ae16fcd40e49879a24c4e40aca5_0">Home Health Services</a></li>
+	<li><a href="http://open-fedmaps.opendata.arcgis.com/datasets/51d35b4f55a241b6a6a2fc14d131f7d2_0">Indian Health Service Facilities</a></li>
+	<li><a href="https://www.va.gov/data/">Veteran Affairs Facilities</a></li>
+</ul>
+
+</p>
+<p>
+Our Return on Investment (ROI) calculations considered a public housing development and state health perspective. Each perspective considered different interventions and costs when calculating the ROI. Our team researched multiple sources to gather the probability of success and costs of each intervention. 
+</p>
+<p>
+<span class='subtitle'>Technical Guide</span><br>
+<a href="mapFiles/Georgia Tech-HUD Project User Guide.pdf" target="_blank">Click here</a> to read about the technical details of the small area estimation using regression and simulation, and the Return on Investment model.
+</p>
+<p>
+<span class='subtitle'>ROI Model</span><br>
+<a href="mapFiles/ROI_CALCULATIONS.xlsx" target="_blank">Click here</a> to download the Excel file containing the data and calculations for the Return on Investment model. 
+</p>
+
+<hr>
+<p>
+Click here for more information <a href="about.html">about the team</a> or for a <a href="glossary.html">glossary</a> of terms. 
+</p>
+
+</div>
+
+<footer class="footer-basic-centered">
+
+	<p class="footer-company-motto">Georgia Tech Senior Design</p>
+
+	<p class="footer-links">
+		<a href="index.html">Home</a>
+		·
+		<a href="maps.html">Maps</a>
+		·
+		<a href="userGuide.html">User Guide</a>
+		·
+		<a href="publicHousing.html">Public Housing</a>
+		·
+		<a href="about.html">About</a>
+		·
+		<a href="glossary.html">Glossary</a>
+		·
+		<a href="contact.html">Contact</a>
+	</p>
+
+	<p class="footer-company-name">Extinguish Tool 2017</p>
+<br><p class='footer-company-name' style='margin:0 auto; width:50%'>The CDC Office of Smoking and Health and the CDC Office of the Associate Director for Science provided expertise and guidance for the development of the Extinguish tool in the support of the implementation of HUD’s Smoke-free policy.  However, CDC does not endorse private products, services or enterprises.</p>
+
+</footer>
+
+</body>
+
+</html>
